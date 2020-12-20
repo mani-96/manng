@@ -31,8 +31,8 @@
                     {{i+1}}
                 </td>
                 <ng-container *ngFor="let column of _settings.columns; let j=index">
-                    <td [ngClass]="column.class ? colukn.class : ''" [style.width]="column.width" [style.maxWidth]="column.maxWidth" [style.minWidth]="column.minWidth" >
-                        <app-custom-cell [class.last]="j == _settings.columns.length-1" [ngClass]="column.class" 
+                    <td [ngClass]="column.class ? column.class : ''" [style.width]="column.width" [style.maxWidth]="column.maxWidth" [style.minWidth]="column.minWidth" >
+                        <app-custom-cell [class.last]="j == _settings.columns.length-1"
                         [rowData]="row" [columnSetting]="column"></app-custom-cell>
                     </td>
                 </ng-container>

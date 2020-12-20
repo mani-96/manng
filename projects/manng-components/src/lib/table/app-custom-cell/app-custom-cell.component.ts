@@ -74,7 +74,11 @@ export class AppCustomCellComponent implements OnInit {
         } else {
           tooltip.style.left = posX + 'px'
         }
-        tooltip.style.top = posY - tooltip.clientHeight + 3 + 'px';
+        let tipYPosition = posY + (clientRect.height/1.5) + 3;
+        if (tipYPosition + tooltip.clientHeight > window.innerHeight) {
+          tipYPosition = window.innerHeight - tooltip.clientHeight;
+        }
+        tooltip.style.top = tipYPosition + 'px';
         tooltip.style.visibility = 'visible';
       } else {
         document.getElementById('man-tooltip').removeAttribute('style');
