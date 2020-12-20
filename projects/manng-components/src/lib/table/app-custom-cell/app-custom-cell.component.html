@@ -1,0 +1,7 @@
+<div *ngIf="_columnSetting['valueType'] == 'key-value' || _columnSetting['valueType'] == 'function'" 
+[ngClass]="[_columnSetting['ellipsis'] ? 'ellipsis' : '']">
+    <div class="cell-value" (mouseover) = "showToolTip($event);" (mouseleave)="hideToolTip()">
+        {{ colValue }}
+    </div>
+</div>
+<div *ngIf="_columnSetting['valueType'] == 'html'" [innerHTML]="_columnSetting.value"></div>

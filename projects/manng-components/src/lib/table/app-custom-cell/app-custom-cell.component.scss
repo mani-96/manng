@@ -1,0 +1,16 @@
+div {
+    position: relative;
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+div.cell-value {
+    overflow: hidden;
+    padding: 12px 0px;
+}
+  
+.ellipsis, .ellipsis div {    
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

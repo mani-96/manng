@@ -1,0 +1,52 @@
+<div class="man-table-wrapper"[style.height]="_settings['tableHeight']">
+    <table aria-describedby="table-for-records">
+        <thead>
+            <th class="pointer checkbox" *ngIf="_settings.showCheckbox" [style.background]="_settings.headerBackground" scope="checkbox">
+                <input type="checkbox" id="checkAll" (click)="checkAll($event)" *ngIf="_data.length>0 && showSelectAllCheckbox" 
+                [disabled]="checkboxDisabled"  
+                [checked]="isAllChecked()">
+            </th>
+            <th class="line-number" scope="line-number" *ngIf="_settings.showLineNumber"  [style.background]="_settings.headerBackground">
+                Line #
+            </th>
+            <ng-container *ngFor="let column of _settings.columns">
+                <th scope="column-header" [ngClass]="[column.class ? column.class: '' , column.canSort ? 'pointer': '', 
+                column.sortColumnName == sortConfig.column ? sortConfig.order : '']" (click)="sortByColumn(column)"
+                [style.width]="column.width" [style.maxWidth]="column.maxWidth" [style.minWidth]="column.minWidth"  
+                [style.background]="_settings.headerBackground">
+                    {{column.label}}
+                </th>
+            </ng-container>
+        </thead>
+        <tbody class="custom-table-body">
+            <tr *ngFor="let row of _data; let i=index" (click)="rowClicked(row, $event)" (dblclick)="rowDBClicked(row, $event)"
+            [ngClass]="[checked[i] ? 'selected' : '']">
+                <td class="checkbox" *ngIf="_settings.showCheckbox && _settings.showCheckboxOnRow(row)">
+                    <input type="checkbox"  [disabled]="checkboxDisabled" [checked]="checked[i]" (click)="checkboxClicked($event, row, i)">
+                </td>
+                <td *ngIf="_settings.showCheckbox && !_settings.showCheckboxOnRow(row)"
+                [innerHTML]="_settings.noCheckboxHTML(row)" class="checkbox-alt">
+                </td>
+                <td class="line-number" *ngIf="_settings.showLineNumber">
+                    {{i+1}}
+                </td>
+                <ng-container *ngFor="let column of _settings.columns; let j=index">
+                    <td [ngClass]="column.class ? colukn.class : ''" [style.width]="column.width" [style.maxWidth]="column.maxWidth" [style.minWidth]="column.minWidth" >
+                        <app-custom-cell [class.last]="j == _settings.columns.length-1" [ngClass]="column.class" 
+                        [rowData]="row" [columnSetting]="column"></app-custom-cell>
+                    </td>
+                </ng-container>
+            </tr>
+            <tr *ngIf="!_data || _data.length == 0" style="text-align: center;">
+                <td [attr.colspan]="totalColumnLength" class="no-data">
+                    <div class="no-data-div">
+                        <span style="position: relative; top: -10px">
+                            {{_settings['noDataMsg']}}
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>    
+</div>
+<div class="man-tooltip" id="man-tooltip"></div>
