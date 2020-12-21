@@ -1,0 +1,106 @@
+*{
+    box-sizing: border-box;
+}
+.multiselect-container {
+    position: relative;
+    max-width: 100%;
+    outline: none;
+}
+
+.multiselect-container.hide-panel{
+    & ul {
+        visibility: hidden;
+        position: fixed;
+    }
+}
+
+.man-multiselect-input {
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    display: block;
+    width: 100%;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    cursor: pointer;
+
+}
+.multiselect-container::after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #382f2f;
+    position: absolute;
+    top: 46%;
+    right: 0.5em;
+}
+  
+ul.man-panel {
+    position: absolute;
+    padding: 5px 0px;
+    margin: 0;
+    list-style: none;
+    z-index: 999;
+    border: 1px solid lightgray;
+    background-color: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 1px;
+    animation-name: fadeIn;
+    animation-duration: 0.2s;
+    animation-fill-mode: forwards;}
+  
+#multiselect-input {
+    font-weight: bold;
+    padding-right: 20px;
+}
+  
+.hide {
+    display: none;
+}
+  
+div.active {
+    border: 2px solid #2196f3;
+}
+  
+li {
+    padding: 3px 5px;
+}
+  
+li.selected {
+    background: #95c5ec;
+}
+  
+li:not(.selected):hover {
+    background: #ededed;
+}
+  
+input {
+    font-weight: bold;
+}
+  
+input[type="checkbox"] {
+    height: 16px;
+    width: 16px;
+}
+  
+.label {
+    padding-left: 10px;
+    position: relative;
+    top: -1px;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0%;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+  
