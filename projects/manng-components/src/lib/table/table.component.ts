@@ -11,10 +11,13 @@ export class TableComponent implements OnInit {
   _settings: any = {
     showCheckbox: false,
     noDataMsg: 'No data found',
-    showCheckboxOnRow: (): boolean => true,
+    showCheckboxOnRow: (row): boolean => true,
+    disableCheckboxOnRow: (row): boolean => false,
     columns: [],
     showLineNumber: true,
-    tableHeight: '280px'
+    tableHeight: '280px',
+    striped: true,
+    headerBackground: '#f8f9fa'
   }
   _data: Array<any> = [];
   sortConfig = {
@@ -72,7 +75,7 @@ export class TableComponent implements OnInit {
     }
     if (this._data && this._data.length > 0) {
       for (let i=0; i<this._data.length; i++) {
-        if (this._settings.showCheckboxOnRow(this._data[i])) {
+        if (this._settings.showCheckboxOnRow(this._data[i]) && this._settings.disableCheckboxOnRow(this._data[i])) {
           count += 1;
         }
       }
@@ -107,7 +110,7 @@ export class TableComponent implements OnInit {
     this.checked = {}
     if (event.target.checked) {
       for (let i=0; i<this._data.length; i++) {
-        if (this._settings.showCheckboxOnRow(this._data[i])) {
+        if (this._settings.showCheckboxOnRow(this._data[i]) && !this._settings.disableCheckboxOnRow(this._data[i])) {
           this.checked[i] = this._data[i]
         }
       }

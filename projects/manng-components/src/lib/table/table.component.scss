@@ -106,11 +106,13 @@ th{
     }
 }
 
-tr:nth-child(odd){
-    background: #ededed;
-}
-tr:nth-child(even){
-    background: #fafafa;
+.striped{
+    & tr:nth-child(even){
+    background: #f8f9fa;
+    }
+    & tr:nth-child(odd){
+        background: #fff;
+    }
 }
 
 .no-data{

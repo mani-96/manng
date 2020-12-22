@@ -18,11 +18,11 @@
                 </th>
             </ng-container>
         </thead>
-        <tbody class="custom-table-body">
+        <tbody class="custom-table-body" [ngClass]="_settings['striped'] ? 'striped' : ''">
             <tr *ngFor="let row of _data; let i=index" (click)="rowClicked(row, $event)" (dblclick)="rowDBClicked(row, $event)"
             [ngClass]="[checked[i] ? 'selected' : '']">
                 <td class="checkbox" *ngIf="_settings.showCheckbox && _settings.showCheckboxOnRow(row)">
-                    <input type="checkbox"  [disabled]="checkboxDisabled" [checked]="checked[i]" (click)="checkboxClicked($event, row, i)">
+                    <input type="checkbox"  [disabled]="checkboxDisabled || _settings.disableCheckboxOnRow(row)" [checked]="checked[i]" (click)="checkboxClicked($event, row, i)">
                 </td>
                 <td *ngIf="_settings.showCheckbox && !_settings.showCheckboxOnRow(row)"
                 [innerHTML]="_settings.noCheckboxHTML(row)" class="checkbox-alt">
