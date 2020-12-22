@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 const formValueAccessor = {
@@ -25,6 +25,12 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   @Input('scrollHeight')
   scrollHeight = 200;
+
+  @Input('disable')
+  disabled;
+
+  @Output('onSelect')
+  onSelect = new EventEmitter<any>();
     
   selectedValues = {};
   allChecked = false;
@@ -34,7 +40,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   top;
   left;
   calculatedMaxHeight;
-  panel
+  panel;
 
   constructor(private el: ElementRef, private cd: ChangeDetectorRef, private renderer: Renderer2) { }
     
@@ -76,8 +82,14 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   registerOnTouched(fn) { 
     this.touched= fn; 
   }
+  setDisabledState(val: boolean) {
+    this.disabled = val;
+  }
 
   toggleOpen() {
+    if (this.disabled) {
+      return;
+    }
     this.touched();
     if (!this.overlayVisible) { 
       this.overlayVisible = true;

@@ -26,8 +26,17 @@
     background-clip: padding-box;
     border: 1px solid #ced4da;
     cursor: pointer;
-
+    outline: none;
+    padding-right: 15px;
+    color: #495057;
+    font-weight: 400;
 }
+
+input.man-multiselect-input[tabindex="-1"] {
+    background-color: #e9ecef;
+    opacity: 1;
+}
+
 .multiselect-container::after {
     content: "";
     width: 0;
@@ -46,18 +55,16 @@ ul.man-panel {
     margin: 0;
     list-style: none;
     z-index: 999;
+    color: #495057;
     border: 1px solid lightgray;
     background-color: #fff;
     max-height: 200px;
     overflow-y: auto;
     margin-top: 1px;
     animation-name: fadeIn;
-    animation-duration: 0.2s;
-    animation-fill-mode: forwards;}
-  
-#multiselect-input {
-    font-weight: bold;
-    padding-right: 20px;
+    animation-duration: 0.10s;
+    animation-fill-mode: forwards;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
 }
   
 .hide {
@@ -77,6 +84,11 @@ li {
 li.selected {
     background: #95c5ec;
 }
+  
+li:not(.selected):hover {
+    background: #ededed;
+}
+
 li:focus {
     border: 2px solid #68b1ec;
 }
@@ -86,10 +98,6 @@ li:focus {
     top: -5px;
     background: white;
     z-index: 2;
-}
-  
-li:not(.selected):hover {
-    background: #ededed;
 }
   
 input {

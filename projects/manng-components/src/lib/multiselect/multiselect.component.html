@@ -1,6 +1,6 @@
-<div class="multiselect-container" id="multiselect-container" (keydown.esc)="hideList()">
-	<input readonly="true" class="man-multiselect-input" id="multiselect-input" [value]="inputValue"
-    style="background-color: #fff; color: black" (click)="toggleOpen()" (keyup.space)="toggleOpen()">
+<div class="multiselect-container" id="multiselect-container" (keydown.esc)="hideList()" [attr.tabindex]="disabled ? -1 : 1">
+	<input readonly="true" class="man-multiselect-input" id="multiselect-input" [value]="inputValue" [attr.tabindex]="disabled ? -1 : 1"
+    (click)="toggleOpen()" (keyup.space)="toggleOpen()">
     <ul class="man-panel" *ngIf="overlayVisible" [style.width.px]="width" [style.maxHeight.px]="calculatedMaxHeight"
     [style.top.px]="top" [style.left.px]=left>
 		<li tabindex="1" (keydown)="onKeyDown($event, 'all', '')" class="check-all">
