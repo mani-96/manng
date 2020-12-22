@@ -69,11 +69,23 @@ div.active {
 }
   
 li {
-    padding: 3px 5px;
+    padding: 1px 5px;
+    border: 2px solid transparent;
+    outline: none;
 }
   
 li.selected {
     background: #95c5ec;
+}
+li:focus {
+    border: 2px solid #68b1ec;
+}
+
+.check-all {
+    position: sticky;
+    top: -5px;
+    background: white;
+    z-index: 2;
 }
   
 li:not(.selected):hover {

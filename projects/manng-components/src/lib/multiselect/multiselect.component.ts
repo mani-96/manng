@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 
 const formValueAccessor = {
@@ -77,58 +77,55 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     this.touched= fn; 
   }
 
-  allClicked(event) {
-    if (event.target.checked) { 
-      this.checkAll(); 
-    } else { 
-      this.uncheckAll(); 
-    } 
-  } 
-
   toggleOpen() {
     this.touched();
     if (!this.overlayVisible) { 
       this.overlayVisible = true;
       this.calculatedMaxHeight = this.scrollHeight;
       (this.el.nativeElement.children[0] as HTMLElement).classList.add('hide-panel');
-      this.getTopPositionAndShow();
+      this.show();
       this.bindClickEventListener();
     } else {
       this.hideList();
     } 
   }
 
-  getTopPositionAndShow() {
-    let elProp = this.el.nativeElement.children[0].getBoundingClientRect();
-    this.width = elProp.width;
+  show() {
     setTimeout( () => {
       if (!this.panel) {
         this.panel = this.el.nativeElement.children[0].children[1];
       }
-      let panelHeight = this.panel.getBoundingClientRect().height;
-      let posYHeight = elProp.bottom + panelHeight;
-      this.left = elProp.x + this.getWindowScrollLeft();
-      if (posYHeight < window.innerHeight) {
-        this.top = elProp.bottom;
-      } else {
-        if (elProp.y > panelHeight + 1) {
-          this.top = elProp.y + this.getWindowScrollTop() - panelHeight - 1;
-        } else {
-          let top = window.innerHeight - elProp.y;
-          let bottom = window.innerHeight - elProp.y - elProp.height;
-          if (top > bottom) {
-            this.calculatedMaxHeight = top - 1;
-            this.top = elProp.y + this.getWindowScrollTop() - (this.calculatedMaxHeight > panelHeight ? panelHeight : this.calculatedMaxHeight)  - 1;
-          } else {
-            this.calculatedMaxHeight = bottom;
-            this.top = elProp.y + + this.getWindowScrollTop() + elProp.height;
-          }
-        }
-      }
+      this.calculateLeftAndTopPosition();
       document.body.appendChild(this.panel);
       (this.el.nativeElement.children[0] as HTMLElement).classList.remove('hide-panel');
       this.cd.detectChanges();
+      this.panel.firstChild.focus();
     }, 0)
+  }
+
+  calculateLeftAndTopPosition() {
+    let elProp = this.el.nativeElement.children[0].getBoundingClientRect();
+    this.width = elProp.width;
+    let panelHeight = this.panel.getBoundingClientRect().height;
+    let posYHeight = elProp.bottom + panelHeight;
+    this.left = elProp.x + this.getWindowScrollLeft();
+    if (posYHeight < window.innerHeight) {
+      this.top = elProp.bottom;
+    } else {
+      if (elProp.y > panelHeight + 1) {
+        this.top = elProp.y + this.getWindowScrollTop() - panelHeight - 1;
+      } else {
+        let top = window.innerHeight - elProp.y;
+        let bottom = window.innerHeight - elProp.y - elProp.height;
+        if (top > bottom) {
+          this.calculatedMaxHeight = top - 1;
+          this.top = elProp.y + this.getWindowScrollTop() - (this.calculatedMaxHeight > panelHeight ? panelHeight : this.calculatedMaxHeight)  - 1;
+        } else {
+          this.calculatedMaxHeight = bottom;
+          this.top = elProp.y + + this.getWindowScrollTop() + elProp.height;
+        }
+      }
+    }
   }
 
   getWindowScrollTop() {
@@ -149,6 +146,17 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     this.cd.detectChanges();
   }
 
+  allClicked(event) {
+    if (event.target.parentElement) {
+      event.target.parentElement.focus();
+    }
+    if (event.target.checked) { 
+      this.checkAll(); 
+    } else { 
+      this.uncheckAll(); 
+    } 
+  } 
+
   checkAll() { 
     this.options.map( (key, index) => {
       this.selectedValues[index] = key;
@@ -164,7 +172,10 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     this.cd.detectChanges();
   } 
 
-  optionClicked(event, i, value) { 
+  optionClicked(event, i, value) {
+    if (event.target.parentElement) {
+      event.target.parentElement.focus();
+    }
     if (event.target.checked) { 
       this.selectedValues[i] = value;
     } else { 
@@ -223,8 +234,61 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     }
   }
 
+  onKeyDown(event, index, option) {
+    switch(event.which) {
+      //down
+      case 40:
+          let nextItem = this.findNextItem(event.target);
+          if (nextItem) {
+              nextItem.focus();
+          }
+          event.preventDefault();
+      break;
+
+      //up
+      case 38:
+          let prevItem = this.findPrevItem(event.target);
+          if (prevItem) {
+              prevItem.focus();
+          }
+
+          event.preventDefault();
+      break;
+
+      //enter
+      case 13:
+      if (index == 'all') {
+        this.allChecked ? this.allClicked({target: {checked: false}}) : this.allClicked({target: {checked: true}})
+      } else {
+        this.selectedValues[index] ? this.optionClicked({target: {checked: false}}, index, option) : 
+        this.optionClicked({target: {checked: true}}, index, option)
+      }           
+      break;
+
+      //esc
+      case 27:
+      this.hideList();          
+      break;
+    }
+  }
+
+  findNextItem(el) {
+    return el.nextElementSibling;
+  }
+
+  findPrevItem(el) {
+    return el.previousElementSibling
+  }
+
   ngOnDestroy() {
     this.hideList();
+  }
+
+  @HostListener('window: resize') 
+  handleResize() {
+    if (this.overlayVisible) {
+      this.calculateLeftAndTopPosition();
+    }
   }
 
 }

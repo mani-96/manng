@@ -3,12 +3,12 @@
     style="background-color: #fff; color: black" (click)="toggleOpen()" (keyup.space)="toggleOpen()">
     <ul class="man-panel" *ngIf="overlayVisible" [style.width.px]="width" [style.maxHeight.px]="calculatedMaxHeight"
     [style.top.px]="top" [style.left.px]=left>
-		<li>
-			<input type="checkbox" id="all" (click)="allClicked($event)" [checked]="allChecked">
+		<li tabindex="1" (keydown)="onKeyDown($event, 'all', '')" class="check-all">
+			<input type="checkbox" id="all" (click)="allClicked($event)" tabindex="-1" [checked]="allChecked">
 			<span class="label"><strong>Select All</strong></span>
 		</li>
-		<li *ngFor="let option of options; let i=index" [class.selected]="selectedValues[i]">
-			<input type="checkbox" class="option-checkbox" (click)="optionClicked($event, i, option)" [checked]="selectedValues[i]">
+		<li *ngFor="let option of options; let i=index" [class.selected]="selectedValues[i]" tabindex="1" (keydown)="onKeyDown($event, i, option)">
+			<input type="checkbox" class="option-checkbox" tabindex="-1" (click)="optionClicked($event, i, option)" [checked]="selectedValues[i]">
 			<span class="label">
                 {{ getOptionValue(option) }}
             </span>
