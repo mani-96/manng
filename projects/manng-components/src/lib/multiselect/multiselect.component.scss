@@ -14,6 +14,27 @@
     }
 }
 
+.man-selected-chips {
+    padding: .25rem 18px 0rem 0.5rem;
+    font-size: .875rem;
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    border: 1px solid #ced4da;
+    border-radius: .2rem;
+    align-items: center;
+    min-height: 2rem;
+    & .chip {
+        background: #95c5ec;
+        padding: 0.25rem 0.5rem;
+        display: flex;
+        position: relative;
+        margin-right: 3px;
+        margin-bottom: 3px;
+        border-radius: 0.2rem;
+    }
+}
+
 .man-multiselect-input {
     padding: .25rem .5rem;
     font-size: .875rem;
@@ -27,7 +48,7 @@
     border: 1px solid #ced4da;
     cursor: pointer;
     outline: none;
-    padding-right: 15px;
+    padding-right: 18px;
     color: #495057;
     font-weight: 400;
 }

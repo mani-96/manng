@@ -33,13 +33,21 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   onSelect = new EventEmitter<any>();
     
   selectedValues = {};
+
   allChecked = false;
+
   width = 100;
+  
   overlayVisible = false;
+  
   documentClickListener;
+  
   top;
+  
   left;
+  
   calculatedMaxHeight;
+  
   panel;
 
   constructor(private el: ElementRef, private cd: ChangeDetectorRef, private renderer: Renderer2) { }
@@ -52,27 +60,17 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   ngOnInit() {}
     
   writeValue(value) {
-    this.allChecked = false;
-    if (typeof value == 'string') {
-      for (let i=0; i<this.options.length; i++) { 
-        if (this.options[i] == value) { 
-          this.inputValue = value;
-          this.selectedValues[i] = value; 
-          break; 
+    this.allChecked = false; 
+    for (let i=0; i<this.options.length; i++) { 
+      for (let j=0; j<value.length; j++) { 
+        if (JSON.stringify(this.options[i]) == JSON.stringify(value[j])) {
+          this.selectedValues[i]=this.options[i]; 
         } 
-      } 
-    } else { 
-      for (let i=0; i<this.options.length; i++) { 
-        for (let j=0; j<value.length; j++) { 
-          if (JSON.stringify(this.options[i]) == JSON.stringify(value[j])) {
-            this.selectedValues[i]=this.options[i]; 
-          } 
-        } 
-      } 
-      if (value.length == this.options.length) { 
-        this.allChecked=true 
       } 
     } 
+    if (value.length == this.options.length) { 
+      this.allChecked = true; 
+    }
   } 
 
   registerOnChange(fn) { 
@@ -105,7 +103,10 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   show() {
     setTimeout( () => {
       if (!this.panel) {
-        this.panel = this.el.nativeElement.children[0].children[1];
+        let el = this.el.nativeElement.children[0] as HTMLElement;
+        if (el.getElementsByTagName('ul')[0]) {
+          this.panel = el.getElementsByTagName('ul')[0];
+        }
       }
       this.calculateLeftAndTopPosition();
       document.body.appendChild(this.panel);
@@ -205,7 +206,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
   
   setInputValueOnCheck() { 
-    let filtered: Array<any> = Object.values(this.selectedValues); 
+    let filtered: Array<any> = Object.values(this.selectedValues);
     this.allChecked = false; 
     if (filtered.length > 0) {
       if (typeof filtered[0] == 'string') {
