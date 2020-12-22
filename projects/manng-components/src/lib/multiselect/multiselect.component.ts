@@ -115,7 +115,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       if (elProp.y > panelHeight + 1) {
         this.top = elProp.y + this.getWindowScrollTop() - panelHeight - 1;
       } else {
-        let top = window.innerHeight - elProp.y;
+        let top = elProp.y;
         let bottom = window.innerHeight - elProp.y - elProp.height;
         if (top > bottom) {
           this.calculatedMaxHeight = top - 1;
