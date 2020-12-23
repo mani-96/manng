@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { ManngComponentsService } from '../../manng-components.service';
+import { UtilServices } from '../../util.service';
 
 @Component({
   selector: 'app-custom-cell',
@@ -26,7 +26,7 @@ export class AppCustomCellComponent implements OnInit {
   tooltipTimeout;
 
 
-  constructor(private serv: ManngComponentsService) { }
+  constructor(private serv: UtilServices) { }
   ngOnInit() {
   }
 

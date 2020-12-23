@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
-import { ManngComponentsService } from '../manng-components.service';
+import { UtilServices } from '../util.service';
 
 @Component({
   selector: 'man-table',
@@ -66,7 +66,7 @@ export class TableComponent implements OnInit {
   rowDblClicked = new EventEmitter<any>();
 
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private serv: ManngComponentsService) { }
+  constructor(private changeDetectorRef: ChangeDetectorRef, private serv: UtilServices) { }
 
   ngOnInit() {
   }
