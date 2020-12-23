@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter, SimpleChanges } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { UtilServices } from '../util.service';
 
@@ -19,8 +19,8 @@ const formValueAccessor = {
 export class MultiselectComponent implements OnInit, ControlValueAccessor {
     
   @Input('options')
-  options: Array<any> = [];
-
+  options: Array<any>;
+  
   @Input('field')
   field: string;
 
@@ -35,8 +35,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   @Output('onSelect')
   onSelect = new EventEmitter<any>();
-    
-  selectedValues = {};
 
   allChecked = false;
 
@@ -45,6 +43,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   overlayVisible = false;
   
   documentClickListener;
+
+  valuesSelected = [];
   
   top;
   
@@ -54,6 +54,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   
   panel;
 
+  renderedOptions = [];
+
   constructor(private el: ElementRef, private cd: ChangeDetectorRef, private renderer: Renderer2, private serv: UtilServices) { }
     
   modelChanged: any = () => {}
@@ -62,16 +64,16 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   inputValue = '';
     
   ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.options.currentValue) {
+      this.renderedOptions = changes.options.currentValue;
+    }
+  }
     
   writeValue(value) {
-    this.allChecked = false; 
-    for (let i=0; i<this.options.length; i++) { 
-      for (let j=0; j<value.length; j++) { 
-        if (JSON.stringify(this.options[i]) == JSON.stringify(value[j])) {
-          this.selectedValues[i]=this.options[i]; 
-        } 
-      } 
-    } 
+    this.allChecked = false;
+    this.valuesSelected = value;
     if (value.length == this.options.length) { 
       this.allChecked = true; 
     }
@@ -167,34 +169,69 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   } 
 
   checkAll() { 
-    this.options.map( (key, index) => {
-      this.selectedValues[index] = key;
-    });
+    this.allChecked = true;
+    if (!this.showSearch) {
+      this.valuesSelected = this.options.slice(0, this.options.length);
+    } else {
+      for (let i=0; i<this.renderedOptions.length; i++) {
+        if (!this.isOptionSelected(this.renderedOptions[i])) {
+          this.valuesSelected.push(this.renderedOptions[i])
+        }
+      }
+    }
     this.setInputValueOnCheck();
   } 
 
   uncheckAll() { 
-    this.selectedValues = {};
-    this.inputValue = '';
+    if (!this.showSearch) {
+      this.valuesSelected = [];
+      this.inputValue = '';
+      this.cd.detectChanges();
+    } else {
+      let index;
+      for (let i=0; i<this.renderedOptions.length; i++) {
+        index = this.getSelectedOptionIndex(this.renderedOptions[i])
+        if (index >= 0) {
+          this.valuesSelected.splice(index)
+        }
+      }
+      this.setInputValueOnCheck();
+    }
     this.allChecked = false; 
     this.modelChanged(null);
-    this.cd.detectChanges();
   } 
 
-  optionClicked(event, i, value) {
-    if (event.target.parentElement) {
+  optionClicked(event, value) {
+    if (event && event.target.parentElement) {
       event.target.parentElement.focus();
     }
-    if (this.selectedValues[i]) {
-      delete this.selectedValues[i]; 
+    let selectedIndex = this.getSelectedOptionIndex(value)
+    if (selectedIndex >= 0) {
+      this.valuesSelected.splice(selectedIndex)
     } else {
-      this.selectedValues[i] = value;
+      this.valuesSelected.push(value);
     }
-    this.setInputValueOnCheck(); 
-  } 
+    this.setInputValueOnCheck();
+    this.getIsAllChecked();
+  }
+
+  isOptionSelected(option) {
+    return this.getSelectedOptionIndex(option) >= 0;
+  }
+
+  getSelectedOptionIndex(option) {
+    let index = -1
+    for (let i=0; i<this.valuesSelected.length; i++) {
+      if (this.serv.isObjectequal(this.valuesSelected[i], option, this.field)) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
 
   getOptionValue(option) {
-    if (typeof option == 'string') {
+    if (!this.field) {
       return option
     } else {
       option[this.field]
@@ -202,23 +239,20 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
   
   setInputValueOnCheck() { 
-    let filtered: Array<any> = Object.values(this.selectedValues);
+    let filtered: Array<any> = this.valuesSelected
     this.allChecked = false; 
     if (filtered.length > 0) {
-      if (typeof filtered[0] == 'string') {
+      if (!this.field) {
         this.inputValue = filtered.length == 1 ? filtered[0] : (filtered.length + ' items selected');
       } else {
         this.inputValue = filtered.length == 1 ? filtered[0][this.field] :(filtered.length + ' items selected');
-      }
-      if (filtered.length == this.options.length) {
-        this.allChecked = true;
       }
       this.modelChanged(filtered);
     } else {
       this.inputValue = '';
       this.modelChanged(null);
     }
-    this.cd.detectChanges();
+    this.getIsAllChecked();
   }
 
   bindClickEventListener() {
@@ -268,9 +302,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       case 13:
       if (index == 'all') {
         this.allChecked ? this.allClicked({target: {checked: false}}) : this.allClicked({target: {checked: true}})
-      } else {
-        this.selectedValues[index] ? this.optionClicked({target: {checked: false}}, index, option) : 
-        this.optionClicked({target: {checked: true}}, index, option)
+      } else { 
+        this.optionClicked('', option)
       }           
       break;
 
@@ -294,10 +327,46 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   search(event) {
-    if (event.target.value) {
-      
+    let value = event.target.value;
+    this.renderedOptions = []
+    if (value) {
+      if (this.field) {
+        for (let i=0; i<this.options.length; i++) {
+          if (this.serv.resolveFieldData(this.options[i], this.field).indexOf(value) != -1) {
+            this.renderedOptions.push(this.options[i])
+          }
+        }
+      } else {
+        for (let i=0; i<this.options.length; i++) {
+          if (this.options[i].indexOf(value) != -1) {
+            this.renderedOptions.push(this.options[i])
+          }
+        }
+      }
+    } else {
+      this.renderedOptions = this.options.slice(0, this.options.length);
     }
+    this.getIsAllChecked();
   }
+
+  getIsAllChecked() {
+    let isAllChecked = true;
+    if (!this.showSearch) {
+      if (this.options.length != this.valuesSelected.length) {
+        isAllChecked = false
+      }
+    } else {
+      for (let i=0 ;i<this.renderedOptions.length; i++) {
+        if (!this.isOptionSelected(this.renderedOptions[i])) {
+          isAllChecked = false;
+          break;
+        }
+      }
+    }
+    this.allChecked = isAllChecked;
+    this.cd.detectChanges();
+  }
+
 
   @HostListener('window: resize') 
   handleResize() {

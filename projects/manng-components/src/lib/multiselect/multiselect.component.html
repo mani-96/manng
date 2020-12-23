@@ -9,13 +9,19 @@
 		</li>
 		<li tabindex="-1" *ngIf="showSearch" class="man-multiselect-search">
 			<input type="checkbox" id="all" (click)="allClicked($event)" tabindex="1" [checked]="allChecked">
-			<input type="text" placeholder="Search" tabindex="1" (keyup)="search($event)">
+			<input type="text" id="man-multiselect-search" value='' placeholder="Search" tabindex="1" (keyup)="search($event)">
 		</li>
-		<li *ngFor="let option of options; let i=index" [class.selected]="selectedValues[i]" tabindex="1" (keydown)="onKeyDown($event, i, option)" (click)="optionClicked($event, i, option)" >
-			<input type="checkbox" class="option-checkbox" tabindex="-1" [checked]="selectedValues[i]">
+		<li *ngFor="let option of renderedOptions; let i=index" [class.selected]="isOptionSelected(option)" tabindex="1" (keydown)="onKeyDown($event, i, option)" (click)="optionClicked('', option)" >
+			<input type="checkbox" class="option-checkbox" tabindex="-1" [checked]="isOptionSelected(option)">
 			<span class="label">
                 {{ getOptionValue(option) }}
             </span>
 		</li>
+		<!-- <li *ngFor="let option of searchResult | keyvalue; let i=index" [class.selected]="selectedValues[i]" tabindex="1" (keydown)="onKeyDown($event, option.key, option.value)" (click)="optionClicked($event, option.key, option.value)" >
+			<input type="checkbox" class="option-checkbox" tabindex="-1" [checked]="selectedValues[i]">
+			<span class="label">
+                {{ getOptionValue(option.value) }}
+            </span>
+		</li> -->
 	</ul>
 </div>

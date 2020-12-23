@@ -20,6 +20,8 @@
 .man-multiselect-search{
     position: sticky;
     top: 0px;
+    background: white;
+    z-index: 2;
     input[type="checkbox"]{
         min-width: 20px!important;
         position: relative;
