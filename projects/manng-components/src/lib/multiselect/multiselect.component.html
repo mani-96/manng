@@ -1,5 +1,5 @@
 <div class="multiselect-container" id="multiselect-container" (keydown.esc)="hideList()" [attr.tabindex]="disabled ? -1 : 1">
-	<input readonly="true" class="man-multiselect-input" id="multiselect-input" [value]="inputValue" [attr.tabindex]="disabled ? -1 : 1"
+	<input readonly="true" class="man-multiselect-input" [class.open]="overlayVisible" id="multiselect-input" [value]="inputValue" [attr.tabindex]="disabled ? -1 : 1"
     (click)="toggleOpen()" (keyup.space)="toggleOpen()">
     <ul class="man-panel" *ngIf="overlayVisible" [style.width.px]="width" [style.maxHeight.px]="calculatedMaxHeight"
     [style.top.px]="top" [style.left.px]=left>

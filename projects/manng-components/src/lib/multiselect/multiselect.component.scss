@@ -5,6 +5,9 @@
     position: relative;
     max-width: 100%;
     outline: none;
+    &:hover .man-multiselect-input{
+        border: 1px solid lighten($color: (#2196f3), $amount: 0.4)
+    }
 }
 
 .multiselect-container.hide-panel{
@@ -57,6 +60,9 @@ input.man-multiselect-input[tabindex="-1"] {
     background-color: #e9ecef;
     opacity: 1;
 }
+.open {
+    border: 1px solid lighten($color: (#2196f3), $amount: 0.4);
+}
 
 .multiselect-container::after {
     content: "";
@@ -72,7 +78,7 @@ input.man-multiselect-input[tabindex="-1"] {
   
 ul.man-panel {
     position: absolute;
-    padding: 5px 0px;
+    padding: 0px 0px;
     margin: 0;
     list-style: none;
     z-index: 999;
@@ -93,13 +99,14 @@ ul.man-panel {
 }
   
 div.active {
-    border: 2px solid #2196f3;
+    border: 1.5px solid #2196f3;
 }
   
 li {
     padding: 1px 5px;
     border: 2px solid transparent;
     outline: none;
+    display: flex;
 }
   
 li.selected {
@@ -116,7 +123,7 @@ li:focus {
 
 .check-all {
     position: sticky;
-    top: -5px;
+    top: 0px;
     background: white;
     z-index: 2;
 }
@@ -133,7 +140,6 @@ input[type="checkbox"] {
 .label {
     padding-left: 10px;
     position: relative;
-    top: -1px;
 }
 
 @keyframes fadeIn {
