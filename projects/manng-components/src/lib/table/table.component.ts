@@ -1,10 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { ManngComponentsService } from '../manng-components.service';
 
 @Component({
   selector: 'man-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  styleUrls: ['./table.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TableComponent implements OnInit {
 
@@ -13,6 +14,7 @@ export class TableComponent implements OnInit {
     noDataMsg: 'No data found',
     showCheckboxOnRow: (row): boolean => true,
     disableCheckboxOnRow: (row): boolean => false,
+    rowClassFunction: (row) => '',
     columns: [],
     showLineNumber: true,
     tableHeight: '280px',
@@ -32,6 +34,7 @@ export class TableComponent implements OnInit {
 
   @Input('settings')
   set settings(value) {
+    this._settings = this.getInitialSettings();
     Object.assign(this._settings, value);
     this.setSort('', '');
     this.sortChanged.emit(this.sortConfig);
@@ -66,6 +69,21 @@ export class TableComponent implements OnInit {
   constructor(private changeDetectorRef: ChangeDetectorRef, private serv: ManngComponentsService) { }
 
   ngOnInit() {
+  }
+
+  getInitialSettings() {
+    return {
+      showCheckbox: false,
+      noDataMsg: 'No data found',
+      showCheckboxOnRow: (row): boolean => true,
+      disableCheckboxOnRow: (row): boolean => false,
+      rowClassFunction: (row) => '',
+      columns: [],
+      showLineNumber: true,
+      tableHeight: '280px',
+      striped: true,
+      headerBackground: '#f8f9fa'
+    }
   }
 
   hasRecordWithCheckbox() {

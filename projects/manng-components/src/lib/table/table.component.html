@@ -1,5 +1,5 @@
 <div class="man-table-wrapper"[style.height]="_settings['tableHeight']">
-    <table aria-describedby="table-for-records">
+    <table aria-describedby="table-for-records" role="grid">
         <thead>
             <th class="pointer checkbox" *ngIf="_settings.showCheckbox" [style.background]="_settings.headerBackground" scope="checkbox">
                 <input type="checkbox" id="checkAll" (click)="checkAll($event)" *ngIf="_data.length>0 && showSelectAllCheckbox" 
@@ -20,7 +20,7 @@
         </thead>
         <tbody class="custom-table-body" [ngClass]="_settings['striped'] ? 'striped' : ''">
             <tr *ngFor="let row of _data; let i=index" (click)="rowClicked(row, $event)" (dblclick)="rowDBClicked(row, $event)"
-            [ngClass]="[checked[i] ? 'selected' : '']">
+            [ngClass]="[checked[i] ? 'selected' : '', _settings.rowClassFunction(row)]">
                 <td class="checkbox" *ngIf="_settings.showCheckbox && _settings.showCheckboxOnRow(row)">
                     <input type="checkbox"  [disabled]="checkboxDisabled || _settings.disableCheckboxOnRow(row)" [checked]="checked[i]" (click)="checkboxClicked($event, row, i)">
                 </td>
