@@ -6,11 +6,12 @@ import { TypeaheadComponent } from './typeahead/typeahead.component';
 import { MultiselectComponent } from './multiselect/multiselect.component';
 import { AppCustomCellComponent } from './table/app-custom-cell/app-custom-cell.component';
 import { RenderedCellComponent } from './table/rendered-cell/rendered-cell.component';
+import { MultiselectItemComponent } from './multiselect/multiselect-item/multiselect-item.component';
 
 
 
 @NgModule({
-  declarations: [ManngComponentsComponent, TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent, RenderedCellComponent],
+  declarations: [ManngComponentsComponent, TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent, RenderedCellComponent, MultiselectItemComponent],
   imports: [ CommonModule
   ],
   exports: [ManngComponentsComponent, TableComponent, MultiselectComponent, TypeaheadComponent]

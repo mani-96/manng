@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter, SimpleChanges, ViewChild } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { UtilServices } from '../util.service';
 
@@ -36,6 +36,16 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   @Output('onSelect')
   onSelect = new EventEmitter<any>();
 
+  @ViewChild('panel', {static: false})
+  set contentPanel(panel) {
+    if (panel) {
+      this.panel = panel.nativeElement;
+      this.show();
+    } else {
+      this.hideList();
+    }
+  }
+
   allChecked = false;
 
   width = 100;
@@ -55,6 +65,10 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   panel;
 
   renderedOptions = [];
+
+  appendedToBody = false;
+
+  searchInput = '';
 
   constructor(private el: ElementRef, private cd: ChangeDetectorRef, private renderer: Renderer2, private serv: UtilServices) { }
     
@@ -99,29 +113,22 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       this.overlayVisible = true;
       this.calculatedMaxHeight = this.scrollHeight;
       (this.el.nativeElement.children[0] as HTMLElement).classList.add('hide-panel');
-      this.show();
-      this.bindClickEventListener();
     } else {
       this.hideList();
     } 
   }
 
   show() {
-    setTimeout( () => {
-      if (!this.panel) {
-        let el = this.el.nativeElement.children[0] as HTMLElement;
-        if (el.getElementsByTagName('ul')[0]) {
-          this.panel = el.getElementsByTagName('ul')[0];
-        }
-      }
-      this.calculateLeftAndTopPosition();
+    this.calculateLeftAndTopPosition();
+    if (!this.appendedToBody) {
       document.body.appendChild(this.panel);
-      (this.el.nativeElement.children[0] as HTMLElement).classList.remove('hide-panel');
-      this.cd.detectChanges();
-      if (!this.showSearch) {
-        this.panel.firstChild.focus();
-      }
-    }, 0)
+      this.appendedToBody = true;
+    }
+    (this.el.nativeElement.children[0] as HTMLElement).classList.remove('hide-panel');
+    this.cd.detectChanges();
+    if (!this.showSearch) {
+    }
+    this.bindClickEventListener();
   }
 
   calculateLeftAndTopPosition() {
@@ -152,6 +159,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   hideList() {
     this.overlayVisible = false;
     this.panel = null;
+    this.appendedToBody = false;
     (this.el.nativeElement.children[0] as HTMLElement).classList.remove('hide-panel');
     this.unbindClickEventListener();
     this.cd.detectChanges();
@@ -201,10 +209,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     this.modelChanged(null);
   } 
 
-  optionClicked(event, value) {
-    if (event && event.target.parentElement) {
-      event.target.parentElement.focus();
-    }
+  optionClicked(value) {
     let selectedIndex = this.getSelectedOptionIndex(value)
     if (selectedIndex >= 0) {
       this.valuesSelected.splice(selectedIndex)
@@ -228,14 +233,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       }
     }
     return index;
-  }
-
-  getOptionValue(option) {
-    if (!this.field) {
-      return option
-    } else {
-      option[this.field]
-    }
   }
   
   setInputValueOnCheck() { 
@@ -262,7 +259,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
             if (event.which === 3) {
                 return;
             }
-            if (this.panel && !this.panel.contains(event.target)) {
+            if ((this.panel && !this.panel.contains(event.target)) && !this.el.nativeElement.contains(event.target)) {
               this.hideList();
             }
             this.cd.detectChanges();
@@ -278,24 +275,24 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   onKeyDown(event, index, option) {
-    switch(event.which) {
+    switch(event.originalEvent.which) {
       //down
       case 40:
-          let nextItem = this.findNextItem(event.target);
-          if (nextItem) {
-              nextItem.focus();
+          let nextItem = this.findNextItem(event.originalEvent.target.parentElement);
+          if (nextItem && nextItem.children[0]) {
+              nextItem.children[0].focus();
           }
-          event.preventDefault();
+          event.originalEvent.preventDefault();
       break;
 
       //up
       case 38:
-          let prevItem = this.findPrevItem(event.target);
-          if (prevItem) {
-              prevItem.focus();
+          let prevItem = this.findPrevItem(event.originalEvent.target.parentElement);
+          if (prevItem && prevItem.children[0]) {
+            prevItem.children[0].focus();
           }
 
-          event.preventDefault();
+          event.originalEvent.preventDefault();
       break;
 
       //enter
@@ -303,7 +300,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       if (index == 'all') {
         this.allChecked ? this.allClicked({target: {checked: false}}) : this.allClicked({target: {checked: true}})
       } else { 
-        this.optionClicked('', option)
+        this.optionClicked(option)
       }           
       break;
 
@@ -328,6 +325,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   search(event) {
     let value = event.target.value;
+    this.searchInput = value;
     this.renderedOptions = []
     if (value) {
       if (this.field) {
@@ -363,7 +361,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
         }
       }
     }
-    this.allChecked = isAllChecked;
+    this.allChecked = this.renderedOptions.length && isAllChecked;
     this.cd.detectChanges();
   }
 

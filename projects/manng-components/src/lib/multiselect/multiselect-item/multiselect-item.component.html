@@ -1,0 +1,6 @@
+<li [class.selected]="selected" (click)="optionClicked($event)" (keydown)="optionKeydown($event)" tabindex="1">
+    <input type="checkbox" [checked]="selected" tabindex="-1">
+    <span class="man-multiselect-label" tabindex="-1">
+        {{ getOptionValue() }}
+    </span>
+</li>

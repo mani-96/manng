@@ -43,6 +43,9 @@
         color: #495057;
         font-weight: 400;
         margin-left: 10px;
+    } 
+    &:focus{
+        border: 2px solid transparent;
     }
 
 }
