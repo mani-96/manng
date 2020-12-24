@@ -33,8 +33,14 @@ export class AppCustomCellComponent implements OnInit {
   updateValue() {
     if (this._columnSetting && this._columnSetting.valueType == 'function') {
       this.getPreparedValue();
-    } else if (this._columnSetting) {
+    } else if (this._columnSetting && this._columnSetting.valueType == 'key-value') {
       this.getValueAtKey();
+    } else if (this._columnSetting && this._columnSetting.valueType == 'html') {
+      if (this._columnSetting && this._columnSetting.value) {
+        this.colValue = this._columnSetting.value
+      } else {
+        this.getPreparedValue();
+      }
     }
   }
 
@@ -42,7 +48,6 @@ export class AppCustomCellComponent implements OnInit {
     if (this._columnSetting.value && this._columnSetting.value.split('.').length > 1) {
       const key = this._columnSetting.value.split('.');
       this.colValue = this.serv.deepValueFetch(key, this._rowData);
-      console.log(this.colValue)
     } else {
       this.colValue = (this._rowData[this._columnSetting.value] ? (this._rowData[this._columnSetting.value]).toString() : '');
     }

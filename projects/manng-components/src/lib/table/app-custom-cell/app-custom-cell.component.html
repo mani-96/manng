@@ -4,4 +4,7 @@
         {{ colValue }}
     </div>
 </div>
-<div *ngIf="_columnSetting['valueType'] == 'html'" [innerHTML]="_columnSetting.value"></div>
+<div *ngIf="_columnSetting['valueType'] == 'html'" [innerHTML]="colValue"></div>
+<div *ngIf="_columnSetting['valueType'] == 'custom'">
+    <man-rendered-cell [rowData]="_rowData" [columnSetting]="_columnSetting"></man-rendered-cell>
+</div>

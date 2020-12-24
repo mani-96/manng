@@ -5,11 +5,12 @@ import { TableComponent } from './table/table.component';
 import { TypeaheadComponent } from './typeahead/typeahead.component';
 import { MultiselectComponent } from './multiselect/multiselect.component';
 import { AppCustomCellComponent } from './table/app-custom-cell/app-custom-cell.component';
+import { RenderedCellComponent } from './table/rendered-cell/rendered-cell.component';
 
 
 
 @NgModule({
-  declarations: [ManngComponentsComponent, TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent],
+  declarations: [ManngComponentsComponent, TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent, RenderedCellComponent],
   imports: [ CommonModule
   ],
   exports: [ManngComponentsComponent, TableComponent, MultiselectComponent, TypeaheadComponent]
