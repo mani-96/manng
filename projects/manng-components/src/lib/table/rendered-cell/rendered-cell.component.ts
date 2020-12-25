@@ -5,7 +5,7 @@ import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewCont
   template: '<ng-template #dynamicTarget></ng-template>',
   styleUrls: ['./rendered-cell.component.css']
 })
-export class RenderedCellComponent implements OnInit {
+export class RenderedCellComponent implements OnInit, OnDestroy {
 
   @Input('columnSetting')
   columnSettings;
@@ -14,10 +14,9 @@ export class RenderedCellComponent implements OnInit {
   rowData
 
   @ViewChild("dynamicTarget", { read: ViewContainerRef, static: true })
-  dynamicTarget: any;
+  dynamicTarget: ViewContainerRef;
 
   customComponent;
-  dynamictarget;
 
   constructor(private resolver: ComponentFactoryResolver) { }
 

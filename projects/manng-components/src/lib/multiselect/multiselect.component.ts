@@ -1,6 +1,7 @@
 import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter, SimpleChanges, ViewChild, Host } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { UtilServices } from '../util.service';
+import { DOMHandler } from '../DOMHandler';
+import { ObjectHelper } from '../ObjectHelper';
 
 const formValueAccessor = {
   provide: NG_VALUE_ACCESSOR,
@@ -77,7 +78,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   searchInput = '';
 
-  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private renderer: Renderer2, private serv: UtilServices) { }
+  constructor(private el: ElementRef, private cd: ChangeDetectorRef, private renderer: Renderer2) { }
     
   modelChanged: any = () => {}
   touched: any = () => {}
@@ -147,27 +148,12 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   calculateLeftAndTopPosition() {
-    let elProp = this.el.nativeElement.children[0].getBoundingClientRect();
-    this.width = elProp.width;
-    let panelHeight = this.panel.getBoundingClientRect().height;
-    let posYHeight = elProp.bottom + panelHeight;
-    this.left = elProp.x + this.serv.getWindowScrollLeft();
-    if (posYHeight < window.innerHeight) {
-      this.top = elProp.bottom;
-    } else {
-      if (elProp.y > panelHeight + 1) {
-        this.top = elProp.y + this.serv.getWindowScrollTop() - panelHeight - 1;
-      } else {
-        let top = elProp.y;
-        let bottom = window.innerHeight - elProp.y - elProp.height;
-        if (top > bottom) {
-          this.calculatedMaxHeight = top - 1;
-          this.top = elProp.y + this.serv.getWindowScrollTop() - (this.calculatedMaxHeight > panelHeight ? panelHeight : this.calculatedMaxHeight)  - 1;
-        } else {
-          this.calculatedMaxHeight = bottom;
-          this.top = elProp.y + + this.serv.getWindowScrollTop() + elProp.height;
-        }
-      }
+    let panelProp = DOMHandler.getPanelProperties(this.el.nativeElement, this.panel);
+    this.top = panelProp.top;
+    this.width = panelProp.width;
+    this.left = panelProp.left;
+    if (panelProp.height) {
+      this.calculatedMaxHeight = panelProp.height;
     }
   }
 
@@ -241,7 +227,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   getSelectedOptionIndex(option) {
     let index = -1
     for (let i=0; i<this.valuesSelected.length; i++) {
-      if (this.serv.isObjectequal(this.valuesSelected[i], option, this.field)) {
+      if (ObjectHelper.isObjectequal(this.valuesSelected[i], option, this.field)) {
         index = i;
         break;
       }
@@ -344,7 +330,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     if (value) {
       if (this.field) {
         for (let i=0; i<this.options.length; i++) {
-          if (this.serv.resolveFieldData(this.options[i], this.field).indexOf(value) != -1) {
+          if (ObjectHelper.resolveFieldData(this.options[i], this.field).indexOf(value) != -1) {
             this.renderedOptions.push(this.options[i])
           }
         }

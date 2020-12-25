@@ -12,7 +12,7 @@
             <ng-container *ngFor="let column of _settings.columns">
                 <th scope="column-header" [ngClass]="[column.class ? column.class: '' , column.canSort ? 'pointer': '', 
                 column.sortColumnName == sortConfig.column ? sortConfig.order : '']" (click)="sortByColumn(column)"
-                [style.width]="column.width" [style.maxWidth]="column.maxWidth" [style.minWidth]="column.minWidth"  
+                [style.width]="column.width" [style.maxWidth]="column.maxWidth" [style.whiteSpace]="column.headerWordWrap ? 'normal' : 'nowrap'" [style.minWidth]="column.minWidth"  
                 [style.background]="_settings.headerBackground">
                     {{column.label}}
                 </th>

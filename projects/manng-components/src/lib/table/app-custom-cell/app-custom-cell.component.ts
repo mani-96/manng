@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { UtilServices } from '../../util.service';
+import { ObjectHelper } from '../../ObjectHelper';
 
 @Component({
   selector: 'app-custom-cell',
@@ -26,7 +26,7 @@ export class AppCustomCellComponent implements OnInit {
   tooltipTimeout;
 
 
-  constructor(private serv: UtilServices) { }
+  constructor() { }
   ngOnInit() {
   }
 
@@ -47,7 +47,7 @@ export class AppCustomCellComponent implements OnInit {
   getValueAtKey() {
     if (this._columnSetting.value && this._columnSetting.value.split('.').length > 1) {
       const key = this._columnSetting.value.split('.');
-      this.colValue = this.serv.deepValueFetch(key, this._rowData);
+      this.colValue = ObjectHelper.deepValueFetch(key, this._rowData);
     } else {
       this.colValue = (this._rowData[this._columnSetting.value] ? (this._rowData[this._columnSetting.value]).toString() : '');
     }

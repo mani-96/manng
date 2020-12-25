@@ -127,21 +127,21 @@
             right: 46%;
         }
     }
+}
     
-    .man-tooltip{
-        position: fixed;
-        font-size: 0.85em;
-        background-color: rgba(0,0,0,0.7);
-        color: white;
-        font-weight: 500;
-        padding: 2px 5px;
-        border-radius: 2px;
-        white-space: normal;
-        word-wrap: break-word;
-        z-index: 999;
-        display: none;
-        max-width: 300px;
-    }
+.man-tooltip{
+    position: fixed;
+    font-size: 0.85em;
+    background-color: rgba(0,0,0,0.7);
+    color: white;
+    font-weight: 500;
+    padding: 2px 5px;
+    border-radius: 2px;
+    white-space: normal;
+    word-wrap: break-word;
+    z-index: 999;
+    display: none;
+    max-width: 300px;
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none){

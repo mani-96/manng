@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
-import { UtilServices } from '../util.service';
+import { ObjectHelper } from '../ObjectHelper';
 
 @Component({
   selector: 'man-table',
@@ -66,7 +66,7 @@ export class TableComponent implements OnInit {
   rowDblClicked = new EventEmitter<any>();
 
 
-  constructor(private changeDetectorRef: ChangeDetectorRef, private serv: UtilServices) { }
+  constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
   }
@@ -138,7 +138,7 @@ export class TableComponent implements OnInit {
   rowClicked(row, event) {
     let path = ['target, firstChild, tagName'];
     if (event.srcElement.tagName.toLowerCase() != 'input' && 
-    this.serv.deepValueFetch(path, event) != 'input') {
+    ObjectHelper.deepValueFetch(path, event) != 'input') {
       this.rowSelected.emit(row)
     }
 
@@ -146,7 +146,7 @@ export class TableComponent implements OnInit {
   rowDBClicked(row, event) {
     let path = ['target, firstChild, tagName'];
     if (event.srcElement.tagName.toLowerCase() != 'input' && 
-    this.serv.deepValueFetch(path, event) != 'input') {
+    ObjectHelper.deepValueFetch(path, event) != 'input') {
       this.rowDblClicked.emit(row)
     }
 
