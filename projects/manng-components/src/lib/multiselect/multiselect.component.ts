@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter, SimpleChanges, ViewChild, Host } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { UtilServices } from '../util.service';
 
@@ -17,6 +17,22 @@ const formValueAccessor = {
   encapsulation: ViewEncapsulation.None
 })
 export class MultiselectComponent implements OnInit, ControlValueAccessor {
+
+  @ViewChild('panel', {static: false})
+  set contentPanel(panel) {
+    if (panel) {
+      this.panel = panel.nativeElement;
+      this.show();
+    } else {
+      this.hideList();
+    }
+  }
+
+  @ViewChild('inputSearch', {static: false})
+  inputSearch; 
+
+  @ViewChild('selectAll', {static: false})
+  selectAll
     
   @Input('options')
   options: Array<any>;
@@ -28,7 +44,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   scrollHeight = 200;
 
   @Input('disable')
-  disabled;
+  disabled = false;
 
   @Input('showSearch')
   showSearch = false;
@@ -36,15 +52,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   @Output('onSelect')
   onSelect = new EventEmitter<any>();
 
-  @ViewChild('panel', {static: false})
-  set contentPanel(panel) {
-    if (panel) {
-      this.panel = panel.nativeElement;
-      this.show();
-    } else {
-      this.hideList();
-    }
-  }
 
   allChecked = false;
 
@@ -86,6 +93,9 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
     
   writeValue(value) {
+    if (!value) {
+      return;
+    }
     this.allChecked = false;
     this.valuesSelected = value;
     if (value.length == this.options.length) { 
@@ -126,7 +136,12 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     }
     (this.el.nativeElement.children[0] as HTMLElement).classList.remove('hide-panel');
     this.cd.detectChanges();
-    if (!this.showSearch) {
+    if (this.showSearch && this.inputSearch) {
+      this.focusSearchInput();
+    } else {
+      if (this.selectAll) {
+        this.selectAll.nativeElement.focus();
+      }
     }
     this.bindClickEventListener();
   }
@@ -165,11 +180,11 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     this.cd.detectChanges();
   }
 
-  allClicked(event) {
-    if (event.target.parentElement) {
+  allClicked(event?) {
+    if (event && event.target.parentElement) {
       event.target.parentElement.focus();
     }
-    if (event.target.checked) { 
+    if (!this.allChecked) { 
       this.checkAll(); 
     } else { 
       this.uncheckAll(); 
@@ -177,7 +192,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   } 
 
   checkAll() { 
-    this.allChecked = true;
     if (!this.showSearch) {
       this.valuesSelected = this.options.slice(0, this.options.length);
     } else {
@@ -187,10 +201,12 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
         }
       }
     }
+    this.allChecked = true;
     this.setInputValueOnCheck();
   } 
 
   uncheckAll() { 
+    this.allChecked = false; 
     if (!this.showSearch) {
       this.valuesSelected = [];
       this.inputValue = '';
@@ -200,19 +216,17 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       for (let i=0; i<this.renderedOptions.length; i++) {
         index = this.getSelectedOptionIndex(this.renderedOptions[i])
         if (index >= 0) {
-          this.valuesSelected.splice(index)
+          this.valuesSelected.splice(index, 1)
         }
       }
       this.setInputValueOnCheck();
     }
-    this.allChecked = false; 
-    this.modelChanged(null);
   } 
 
   optionClicked(value) {
     let selectedIndex = this.getSelectedOptionIndex(value)
     if (selectedIndex >= 0) {
-      this.valuesSelected.splice(selectedIndex)
+      this.valuesSelected.splice(selectedIndex, 1)
     } else {
       this.valuesSelected.push(value);
     }
@@ -236,7 +250,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
   
   setInputValueOnCheck() { 
-    let filtered: Array<any> = this.valuesSelected
+    let filtered: Array<any> = this.valuesSelected.slice()
     this.allChecked = false; 
     if (filtered.length > 0) {
       if (!this.field) {
@@ -306,7 +320,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
       //esc
       case 27:
-      this.hideList();          
+      this.escapeKeydown(event.originalEvent);
       break;
     }
   }
@@ -363,6 +377,59 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     }
     this.allChecked = this.renderedOptions.length && isAllChecked;
     this.cd.detectChanges();
+  }
+
+  escapeKeydown(event) {
+    this.hideList();
+    this.focusInput();
+    event.preventDefault();
+  }
+
+  handleInputKeydown(event) {
+    if (this.overlayVisible) {
+      if (event.which == 9 && !event.shiftKey) {
+        if (this.showSearch) {
+          this.selectAll.nativeElement.children[0].focus();
+        } else {
+          this.selectAll.nativeElement.focus();
+        }
+        event.preventDefault();
+      }
+      if (event.which == 40 && !this.showSearch) {
+        this.selectAll.nativeElement.focus();
+        event.preventDefault();
+      }
+    }
+  }
+
+  handleAllCheckboxKeydown(event) {
+    if (event.shiftKey && event.which == 9) {
+      this.focusInput();
+      event.preventDefault();
+    }
+    if (!this.showSearch && event.which == 40) {
+
+    }
+    if (event.which == 13) {
+      this.allClicked();
+      event.preventDefault();
+    }
+  }
+
+  goToPrevious() {
+    if (this.showSearch) {
+      this.focusSearchInput();
+    } else {
+      this.selectAll.nativeElement.focus();
+    }
+  }
+
+  focusInput() {
+    this.el.nativeElement.children[0].firstChild.focus();
+  }
+
+  focusSearchInput() {
+    this.inputSearch.nativeElement.focus();
   }
 
 

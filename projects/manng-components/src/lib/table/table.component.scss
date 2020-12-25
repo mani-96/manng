@@ -2,143 +2,146 @@
     overflow-y: auto;
     box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
 }
-table{
-    width: 100%;
-    border-collapse: collapse;
-    font-size: inherit;
-    font-family: inherit;
-    border-bottom: 1px solid rgb(204, 203, 203);
-}
 
-td, th{
-    padding: 12px 8px 12px 5px;
-    text-align: left;
-    color: black;
-    &.checkbox,&.checkbox-alt{
-        width: 30px;
-        padding: 3px;
-        max-width: 30px;
-        min-width: 30px;
-        text-align: center;
+.man-table-wrapper{
+    table{
+        width: 100%;
+        border-collapse: collapse;
+        font-size: inherit;
+        font-family: inherit;
+        border-bottom: 1px solid rgb(204, 203, 203);
     }
-    &.checkbox-alt{
-        padding: 5px 0px 0px 0px;
-        pointer-events: none;
-        cursor: initial;
+    
+    td, th{
+        padding: 12px 8px 12px 5px;
+        text-align: left;
+        color: black;
+        &.checkbox,&.checkbox-alt{
+            width: 30px;
+            padding: 3px;
+            max-width: 30px;
+            min-width: 30px;
+            text-align: center;
+        }
+        &.checkbox-alt{
+            padding: 5px 0px 0px 0px;
+            pointer-events: none;
+            cursor: initial;
+        }
+        &.line-number{
+            width: 45px;
+            padding: 12px 8px;
+            max-width: 56px;
+            min-width: 45px;
+            text-align: center;
+    
+        }
     }
-    &.line-number{
-        width: 45px;
-        padding: 12px 8px;
-        max-width: 56px;
-        min-width: 45px;
-        text-align: center;
-
+    
+    td {
+        padding: 0px 8px 0px 5px!important;
     }
-}
-
-td {
-    padding: 0px 8px 0px 5px!important;
-}
-
-
-*, *::before,*::after{
-    box-sizing: border-box!important;
-}
-
-
-tr{
-    cursor: pointer;
-    &.selected{
-        background-color: #58acf0 !important;
+    
+    
+    *, *::before,*::after{
+        box-sizing: border-box!important;
     }
-}
-
-
-thead{
-    background-color: white;
-
-}
-
-input[type="checkbox"]{
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    position: relative;
-    top: 3.5px;
-}
-th{
-    white-space: nowrap;
-    padding: 10px 5px;
-    background-color: white;
-    position: sticky;
-    font-weight: 550;
-    font-size: 0.95em;
-    top: 0px;
-    z-index: 2;
-    pointer-events: none;
-    &.pointer{
+    
+    
+    tr{
         cursor: pointer;
-        pointer-events: all;
-        &.ASC {
-            &::after {
-            content: '';
-                display: inline-block;
-                border: 4px solid transparent;
-                border-bottom-color: black;
-                position: relative;
-                right: 2px;
-                bottom: 3px;
-            }
-        }
-        &.DESC{
-            &::after {
-                content: '';
-                display: inline-block;
-                border: 4px solid transparent;
-                border-bottom-color: black;
-                -webkit-transform: rotate(-180deg);
-                transform: rotate(-180deg);
-                position: relative;                
-                top: 2px;
-                right: 2px;
-                bottom: 3px;
-            }
+        &.selected{
+            background-color: #58acf0 !important;
         }
     }
-}
-
-.striped{
-    & tr:nth-child(even){
-    background: #f8f9fa;
+    
+    
+    thead{
+        background-color: white;
+    
     }
-    & tr:nth-child(odd){
-        background: #fff;
+    
+    input[type="checkbox"]{
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        position: relative;
+        top: 3.5px;
     }
-}
-
-.no-data{
-    text-align: center!important;
-    height: 25px;
-    & div{
-        position: absolute;
+    th{
+        white-space: nowrap;
+        padding: 10px 5px;
+        background-color: white;
+        position: sticky;
         font-weight: 550;
-        right: 46%;
+        font-size: 0.95em;
+        top: 0px;
+        z-index: 2;
+        pointer-events: none;
+        &.pointer{
+            cursor: pointer;
+            pointer-events: all;
+            &.ASC {
+                &::after {
+                content: '';
+                    display: inline-block;
+                    border: 4px solid transparent;
+                    border-bottom-color: black;
+                    position: relative;
+                    right: 2px;
+                    bottom: 3px;
+                }
+            }
+            &.DESC{
+                &::after {
+                    content: '';
+                    display: inline-block;
+                    border: 4px solid transparent;
+                    border-bottom-color: black;
+                    -webkit-transform: rotate(-180deg);
+                    transform: rotate(-180deg);
+                    position: relative;                
+                    top: 2px;
+                    right: 2px;
+                    bottom: 3px;
+                }
+            }
+        }
     }
-}
-
-.man-tooltip{
-    position: fixed;
-    font-size: 0.85em;
-    background-color: rgba(0,0,0,0.7);
-    color: white;
-    font-weight: 500;
-    padding: 2px 5px;
-    border-radius: 2px;
-    white-space: normal;
-    word-wrap: break-word;
-    z-index: 999;
-    display: none;
-    max-width: 300px;
+    
+    .striped{
+        & tr:nth-child(even){
+        background: #f8f9fa;
+        }
+        & tr:nth-child(odd){
+            background: #fff;
+        }
+    }
+    
+    .no-data{
+        text-align: center!important;
+        height: 25px;
+        & div{
+            position: absolute;
+            font-weight: 550;
+            right: 46%;
+        }
+    }
+    
+    .man-tooltip{
+        position: fixed;
+        font-size: 0.85em;
+        background-color: rgba(0,0,0,0.7);
+        color: white;
+        font-weight: 500;
+        padding: 2px 5px;
+        border-radius: 2px;
+        white-space: normal;
+        word-wrap: break-word;
+        z-index: 999;
+        display: none;
+        max-width: 300px;
+    }
 }
 
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none){

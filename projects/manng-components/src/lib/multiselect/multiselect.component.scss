@@ -25,9 +25,11 @@
     input[type="checkbox"]{
         min-width: 20px!important;
         position: relative;
-        top: 8px;
         left: -2px;
         outline: none;
+        &:focus{
+            outline: 2px solid #2196f3;
+        }    
     }
     input[type="text"]{
         padding: .25rem .5rem;
@@ -43,6 +45,11 @@
         color: #495057;
         font-weight: 400;
         margin-left: 10px;
+        outline: none;
+        &:focus{
+            border: 1px solid #2196f3;
+            box-shadow: 0px 0px 5px #2397f3;
+        }
     } 
     &:focus{
         border: 2px solid transparent;
@@ -83,10 +90,18 @@
     background-clip: padding-box;
     border: 1px solid #ced4da;
     cursor: pointer;
-    outline: none;
+    outline: 1px solid transparent;
     padding-right: 18px;
     color: #495057;
     font-weight: 400;
+    &:focus{
+        border: 1px solid #86beec;
+        box-shadow: 0px 0px 5px #2397f3;
+    }
+}
+
+.man-multiselect-search, .check-all {
+    background: #ededed;
 }
 
 input.man-multiselect-input[tabindex="-1"] {
@@ -141,6 +156,7 @@ li {
     outline: none;
     display: flex;
     cursor: pointer;
+    align-items: center;
 }
   
 li.selected {
@@ -148,7 +164,7 @@ li.selected {
 }
   
 li:not(.selected):hover {
-    background: #ededed;
+    background: #f1f1f1;
 }
 
 li:focus {
@@ -158,7 +174,6 @@ li:focus {
 .check-all {
     position: sticky;
     top: 0px;
-    background: white;
     z-index: 2;
 }
   

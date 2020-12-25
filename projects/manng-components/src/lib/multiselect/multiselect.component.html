@@ -1,19 +1,20 @@
-<div class="multiselect-container" (keydown.esc)="hideList()" [attr.tabindex]="disabled ? -1 : 1">
+<div class="multiselect-container">
 	<input readonly="true" class="man-multiselect-input" [class.open]="overlayVisible" [value]="inputValue" [attr.tabindex]="disabled ? -1 : 1"
-    (click)="toggleOpen()" (keyup.space)="toggleOpen()">
+    (click)="toggleOpen()" (keyup.space)="toggleOpen()" (keydown.esc)="escapeKeydown($event)" (keydown)="handleInputKeydown($event)">
     <ul class="man-panel" #panel *ngIf="overlayVisible" [style.width.px]="width" [style.maxHeight.px]="calculatedMaxHeight"
-    [style.top.px]="top" [style.left.px]=left>
-		<li tabindex="1" *ngIf="!showSearch" class="check-all">
+    [style.top.px]="top" [style.left.px]=left (keydown.esc)="escapeKeydown($event)">
+		<li tabindex="1" #selectAll *ngIf="!showSearch" class="check-all" (keydown)="handleAllCheckboxKeydown($event)">
 			<input type="checkbox" (click)="allClicked($event)" tabindex="-1" [checked]="allChecked">
 			<span class="label"><strong>Select All</strong></span>
 		</li>
-		<li tabindex="1" *ngIf="showSearch" class="man-multiselect-search">
-			<input type="checkbox" (click)="allClicked($event)" tabindex="1" [checked]="allChecked">
-			<input type="text" #inputSearch [value]='searchInput' placeholder="Search" tabindex="1" autofocus="true" (keyup)="search($event)">
+		<li tabindex="-1" #selectAll *ngIf="showSearch" class="man-multiselect-search" style="min-height: 39px">
+			<input type="checkbox" (click)="allClicked($event)" tabindex="1" [checked]="allChecked" (keydown)="handleAllCheckboxKeydown($event)">
+			<input type="text" #inputSearch [value]='searchInput' placeholder="Search" tabindex="1" (input)="search($event)">
 		</li>
 		<ng-container *ngIf="true">
-				<ng-template ngFor let-option let-i="index" [ngForOf]="renderedOptions">
-						<man-multiselect-item [selected]="isOptionSelected(option)" [field]="field" [option]="option" (onOptionClick)="optionClicked($event)" (onOptionKeydown)="onKeyDown($event, '', option)">
+				<ng-template ngFor let-option let-i="index" let-last="last" let-first="first" [ngForOf]="renderedOptions">
+						<man-multiselect-item [selected]="isOptionSelected(option)" [field]="field" [option]="option" [isLast]="last" [isFirst]="first" (onOptionClick)="optionClicked($event)" (onOptionKeydown)="onKeyDown($event, '', option)"
+						(gotoPreviousElement)="goToPrevious()">
 				
 						</man-multiselect-item>
 				</ng-template>

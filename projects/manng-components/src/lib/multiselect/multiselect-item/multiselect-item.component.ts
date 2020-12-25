@@ -19,11 +19,20 @@ export class MultiselectItemComponent implements OnInit {
   @Input('option')
   option;
 
+  @Input('isLast')
+  isLast;
+
+  @Input('isFirst')
+  isFirst;
+
   @Output('onOptionClick')
   onOptionClick =  new EventEmitter<any>();
 
   @Output('onOptionKeydown')
   onOptionKeydown =  new EventEmitter<any>()
+
+  @Output('gotoPreviousElement')
+  gotoPreviousElement = new EventEmitter<any>();
 
   ngOnInit() {
   }
@@ -37,6 +46,18 @@ export class MultiselectItemComponent implements OnInit {
   }
 
   optionKeydown(event){
+    if (this.isLast) {
+      if ( (event.which == 9 && !event.shiftKey) || event.which == 40) {
+        event.preventDefault();
+        return
+      }
+    } else if (this.isFirst) {
+      if ((event.which == 9 && event.shiftKey) || event.which == 38) {
+        event.preventDefault();
+        this.gotoPreviousElement.emit();
+        return
+      }
+    }
     this.onOptionKeydown.emit({
       originalEvent: event,
       option: this.option
