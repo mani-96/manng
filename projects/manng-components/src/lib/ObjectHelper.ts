@@ -87,6 +87,9 @@ export class ObjectHelper {
               return value;
           }
       }
+      else if (data && !field){
+          return data;
+      }
       else {
           return null;
       }
