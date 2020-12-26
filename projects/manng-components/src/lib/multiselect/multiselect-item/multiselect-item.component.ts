@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { ObjectHelper } from '../../ObjectHelper';
 
 @Component({
   selector: 'man-multiselect-item',
@@ -41,7 +42,8 @@ export class MultiselectItemComponent implements OnInit {
     if (!this.field) {
       return this.option
     } else {
-      this.option[this.field]
+      let path = this.field.split('.');
+      return ObjectHelper.deepValueFetch(path, this.option);
     }
   }
 
