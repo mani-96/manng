@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, ViewChild, ElementRef, ChangeDetectorRef, Renderer2, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, ViewChild, ElementRef, HostListener, ChangeDetectorRef, Renderer2, EventEmitter } from '@angular/core';
 import { DOMHandler } from '../DOMHandler';
 import { ObjectHelper } from '../ObjectHelper';
 
@@ -28,6 +28,9 @@ export class TypeaheadComponent implements OnInit {
 
   @Input('searchExternal')
   searchExternal = false;
+
+  @Input('panelHeight')
+  panelHeight = 200;
 
   @Input('options')
   set dataList(value: Array<any>) {
@@ -162,6 +165,7 @@ export class TypeaheadComponent implements OnInit {
   }
 
   show() {
+    this.calculatedMaxHeight = this.panelHeight;
     document.body.appendChild(this.panel);
     let panelProp = DOMHandler.getPanelProperties(this.el.nativeElement.children[0], this.panel);
     this.top = panelProp.top;
@@ -284,6 +288,21 @@ export class TypeaheadComponent implements OnInit {
     if (this.documentClickListener) {
       this.documentClickListener();
       this.documentClickListener = null;
+    }
+  }
+
+  @HostListener('window: resize') 
+  handleResize() {
+    this.calculatedMaxHeight = this.panelHeight;
+    if (this.overlayVisible) {
+      let panelProp = DOMHandler.getPanelProperties(this.el.nativeElement.children[0], this.panel);
+      this.top = panelProp.top;
+      this.width = panelProp.width;
+      this.left = panelProp.left;
+      if (panelProp.height) {
+        this.calculatedMaxHeight = panelProp.height
+      }
+      this.cd.detectChanges();
     }
   }
 

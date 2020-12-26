@@ -9,7 +9,7 @@ export class DOMHandler {
         let posYHeight = elProp.bottom + panelHeight;
         left = elProp.x + this.getWindowScrollLeft();
         if (posYHeight < window.innerHeight) {
-          top = elProp.bottom;
+          top = elProp.bottom + this.getWindowScrollTop();
         } else {
           if (elProp.y > panelHeight + 1) {
             top = elProp.y + this.getWindowScrollTop() - panelHeight - 1;
