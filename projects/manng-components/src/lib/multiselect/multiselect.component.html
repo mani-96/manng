@@ -1,7 +1,7 @@
 <div class="multiselect-container">
 	<input readonly="true" class="man-multiselect-input" [class.open]="overlayVisible" [value]="inputValue" [disabled]="disabled"
-    (click)="toggleOpen()" (keyup.space)="toggleOpen()" (keydown.esc)="escapeKeydown($event)" (keydown)="handleInputKeydown($event)">
-    <ul class="man-panel" #panel *ngIf="overlayVisible" [style.width.px]="width" [style.maxHeight.px]="calculatedMaxHeight"
+    (click)="toggleOpen()" [ngClass]="inputStyleClass" (keyup.space)="toggleOpen()" (keydown.esc)="escapeKeydown($event)" (keydown)="handleInputKeydown($event)">
+    <ul class="man-panel" [ngClass]="overlayStyleClass" #panel *ngIf="overlayVisible" [style.width.px]="width" [style.maxHeight.px]="calculatedMaxHeight"
 	[style.top.px]="top" [style.left.px]=left (keydown.esc)="escapeKeydown($event)">
 		<div class="man-multiselect-header">
 			<li tabindex="1" #selectAll *ngIf="!showSearch" class="check-all" (keydown)="handleAllCheckboxKeydown($event)">
@@ -17,7 +17,7 @@
 			<ng-container *ngIf="true">
 				<ng-template ngFor let-option let-i="index" let-last="last" let-first="first" [ngForOf]="renderedOptions">
 						<man-multiselect-item [selected]="isOptionSelected(option)" [field]="field" [option]="option" [isLast]="last" [isFirst]="first" (onOptionClick)="optionClicked($event)" (onOptionKeydown)="onKeyDown($event, '', option)"
-						(gotoPreviousElement)="goToPrevious()">
+						(gotoPreviousElement)="goToPrevious()" [optionTemplate]="optionTemplate">
 				
 						</man-multiselect-item>
 				</ng-template>

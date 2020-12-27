@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter, SimpleChanges, ViewChild, Host } from '@angular/core';
+import { Component, OnInit, forwardRef, Input, ElementRef, ChangeDetectionStrategy, Renderer2, ViewEncapsulation, ChangeDetectorRef, HostListener, Output, EventEmitter, SimpleChanges, ViewChild, QueryList, ContentChildren } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { DOMHandler } from '../DOMHandler';
 import { ObjectHelper } from '../ObjectHelper';
@@ -52,6 +52,15 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   @Output('onSelect')
   onSelect = new EventEmitter<any>();
+
+  @Input('optionTemplate')
+  optionTemplate
+
+  @Input('inputStyleClass')
+  inputStyleClass = ''
+
+  @Input('overlayStyleClass')
+  overlayStyleClass = '';
 
 
   allChecked = false;
@@ -242,7 +251,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       if (!this.field) {
         this.inputValue = filtered.length == 1 ? filtered[0] : (filtered.length + ' items selected');
       } else {
-        this.inputValue = filtered.length == 1 ? filtered[0][this.field] :(filtered.length + ' items selected');
+        this.inputValue = filtered.length == 1 ? ObjectHelper.resolveFieldData(filtered[0], this.field) :(filtered.length + ' items selected');
       }
       this.modelChanged(filtered);
     } else {

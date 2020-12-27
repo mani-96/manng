@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { ObjectHelper } from '../../ObjectHelper';
 
 @Component({
@@ -10,6 +10,9 @@ import { ObjectHelper } from '../../ObjectHelper';
 export class MultiselectItemComponent implements OnInit {
 
   constructor(private cd: ChangeDetectorRef) { }
+
+  @Input('optionTemplate')
+  optionTemplate
 
   @Input('selected')
   selected;

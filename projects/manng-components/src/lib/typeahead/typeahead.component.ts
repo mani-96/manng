@@ -68,6 +68,14 @@ export class TypeaheadComponent implements OnInit {
   @Input('debounceTime')
   debounceTime = 50;
 
+  @Input('inputStyleClass')
+  inputStyleClass = ''
+
+  @Input('overlayStyleClass')
+  overlayStyleClass = ''
+
+  @Input('optionTemplate')
+  optionTemplate
 
   @Output()
   onKeydown = new EventEmitter<any>();
