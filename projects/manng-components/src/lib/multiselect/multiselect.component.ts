@@ -44,6 +44,9 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   @Input('scrollHeight')
   scrollHeight = 200;
 
+  @Input('selectionLimit')
+  selectionLimit = null;
+
   @Input('disable')
   disabled = false;
 
@@ -222,7 +225,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     let selectedIndex = this.getSelectedOptionIndex(value)
     if (selectedIndex >= 0) {
       this.valuesSelected.splice(selectedIndex, 1)
-    } else {
+    } else if ((this.selectionLimit != null && this.valuesSelected.length < this.selectionLimit) || this.selectionLimit == null){
       this.valuesSelected.push(value);
     }
     this.setInputValueOnCheck();
