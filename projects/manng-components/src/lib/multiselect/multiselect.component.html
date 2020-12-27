@@ -5,11 +5,11 @@
 	[style.top.px]="top" [style.left.px]=left (keydown.esc)="escapeKeydown($event)">
 		<div class="man-multiselect-header">
 			<li tabindex="1" #selectAll *ngIf="!showSearch" class="check-all" (keydown)="handleAllCheckboxKeydown($event)">
-				<input type="checkbox" (click)="allClicked($event)" tabindex="-1" [checked]="allChecked">
+				<input type="checkbox" [disabled]="selectionLimit" (click)="allClicked($event)" tabindex="-1" [checked]="allChecked">
 				<span class="label"><strong>Select All</strong></span>
 			</li>
-			<li tabindex="-1" #selectAll *ngIf="showSearch" class="man-multiselect-search" style="min-height: 39px">
-				<input type="checkbox" (click)="allClicked($event)" tabindex="1" [checked]="allChecked" (keydown)="handleAllCheckboxKeydown($event)">
+			<li tabindex="-1" #selectAll *ngIf="showSearch" class="man-multiselect-search">
+				<input type="checkbox" [disabled]="selectionLimit" (click)="allClicked($event)" tabindex="1" [checked]="allChecked" (keydown)="handleAllCheckboxKeydown($event)">
 				<input type="text" #inputSearch [value]='searchInput' placeholder="Search" tabindex="1" (input)="search($event)">
 			</li>
 		</div>
@@ -17,7 +17,7 @@
 			<ng-container *ngIf="true">
 				<ng-template ngFor let-option let-i="index" let-last="last" let-first="first" [ngForOf]="renderedOptions">
 						<man-multiselect-item [selected]="isOptionSelected(option)" [field]="field" [option]="option" [isLast]="last" [isFirst]="first" (onOptionClick)="optionClicked($event)" (onOptionKeydown)="onKeyDown($event, '', option)"
-						(gotoPreviousElement)="goToPrevious()" [optionTemplate]="optionTemplate">
+						(gotoPreviousElement)="goToPrevious()" [limitReached]="valuesSelected.length == selectionLimit" [optionTemplate]="optionTemplate">
 				
 						</man-multiselect-item>
 				</ng-template>

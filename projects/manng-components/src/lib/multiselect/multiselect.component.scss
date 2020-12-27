@@ -18,6 +18,7 @@
 }
 
 .man-multiselect-search{
+    min-height: 39px;
     input[type="checkbox"]{
         min-width: 20px!important;
         position: relative;
@@ -156,14 +157,6 @@ li {
     align-items: center;
 }
   
-li.selected {
-    background: #95c5ec;
-}
-  
-li:not(.selected):hover {
-    background: #f1f1f1;
-}
-
 li:focus {
     border: 2px solid #68b1ec;
 }

@@ -3,6 +3,17 @@ input[type="checkbox"] {
     height: 16px;
     width: 16px;
 }
+li.selected {
+    background-color: #95c5ec;
+    transition: background-color 0.2s cubic-bezier(0.215, 0.610, 0.355, 1);
+}
+li.disableOption{
+    color: lightgray;
+}
+  
+li:not(.selected):hover {
+    background: #f1f1f1;
+}
   
 .man-multiselect-label {
     padding-left: 10px;

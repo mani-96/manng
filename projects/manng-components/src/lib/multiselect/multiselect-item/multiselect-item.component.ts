@@ -14,6 +14,9 @@ export class MultiselectItemComponent implements OnInit {
   @Input('optionTemplate')
   optionTemplate
 
+  @Input('selectionLimit')
+  selectionLimit
+
   @Input('selected')
   selected;
 
@@ -29,6 +32,9 @@ export class MultiselectItemComponent implements OnInit {
   @Input('isFirst')
   isFirst;
 
+  @Input('limitReached')
+  limitReached = true;
+
   @Output('onOptionClick')
   onOptionClick =  new EventEmitter<any>();
 
@@ -38,7 +44,17 @@ export class MultiselectItemComponent implements OnInit {
   @Output('gotoPreviousElement')
   gotoPreviousElement = new EventEmitter<any>();
 
+  isDisabled = false;
+
   ngOnInit() {
+  }
+
+  ngOnChanges() {
+    if (this.limitReached && !this.selected) {
+      this.isDisabled = true;
+    } else {
+      this.isDisabled = false;
+    }
   }
   
   getOptionValue() {
@@ -63,6 +79,10 @@ export class MultiselectItemComponent implements OnInit {
         return
       }
     }
+    if (this.isDisabled && event.which == 13) {
+      event.preventDefault();
+      return;
+    }
     this.onOptionKeydown.emit({
       originalEvent: event,
       option: this.option
@@ -72,6 +92,9 @@ export class MultiselectItemComponent implements OnInit {
 
   optionClicked(event) {
     event.target.parentElement.focus();
+    if (this.isDisabled) {
+      return;
+    }
     this.onOptionClick.emit(this.option);
   }
 

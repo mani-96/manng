@@ -1,5 +1,5 @@
-<li [class.selected]="selected" (click)="optionClicked($event)" (keydown)="optionKeydown($event)" tabindex="1">
-    <input type="checkbox" [checked]="selected" tabindex="-1">
+<li [class.selected]="selected" [class.disableOption]="isDisabled" (click)="optionClicked($event)" (keydown)="optionKeydown($event)" tabindex="0">
+    <input type="checkbox" [disabled]="isDisabled" [checked]="selected" tabindex="-1">
     <span class="man-multiselect-label" tabindex="-1" *ngIf="!optionTemplate">
         {{ getOptionValue() }}
     </span>

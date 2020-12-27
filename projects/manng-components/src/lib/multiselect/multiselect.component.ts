@@ -182,6 +182,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     if (event && event.target.parentElement) {
       event.target.parentElement.focus();
     }
+    if (this.selectionLimit) 
+      return;
     if (!this.allChecked) { 
       this.checkAll(); 
     } else { 
@@ -229,7 +231,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       this.valuesSelected.push(value);
     }
     this.setInputValueOnCheck();
-    this.getIsAllChecked();
   }
 
   isOptionSelected(option) {
@@ -409,7 +410,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
     }
     if (event.which == 13) {
-      this.allClicked();
+      if (!this.selectionLimit)
+        this.allClicked();
       event.preventDefault();
     }
   }
