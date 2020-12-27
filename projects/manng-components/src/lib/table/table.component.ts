@@ -20,7 +20,8 @@ export class TableComponent implements OnInit {
     showLineNumber: true,
     tableHeight: '280px',
     striped: true,
-    headerBackground: '#f8f9fa'
+    headerBackground: '#f8f9fa',
+    showGridlines: false
   }
   _data: Array<any> = [];
   sortConfig = {
@@ -54,6 +55,7 @@ export class TableComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
+
   @Output()
   checkChanged = new EventEmitter<any>();
 
@@ -83,7 +85,8 @@ export class TableComponent implements OnInit {
       showLineNumber: true,
       tableHeight: '280px',
       striped: true,
-      headerBackground: '#f8f9fa'
+      headerBackground: '#f8f9fa',
+      showGridlines: false
     }
   }
 

@@ -144,6 +144,10 @@
     max-width: 300px;
 }
 
+.gridlines th,td{
+    border: 1px solid rgb(224, 223, 223);
+}
+
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none){
     thead{
         display: flex;

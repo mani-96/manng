@@ -1,5 +1,5 @@
 <div class="man-table-wrapper"[style.height]="_settings['tableHeight']">
-    <table aria-describedby="table-for-records" role="grid">
+    <table aria-describedby="table-for-records" role="grid" [class.gridlines]="_settings.showGridlines">
         <thead>
             <th class="pointer checkbox" *ngIf="_settings.showCheckbox" [style.background]="_settings.headerBackground" scope="checkbox">
                 <input type="checkbox" id="checkAll" (click)="checkAll($event)" *ngIf="_data.length>0 && showSelectAllCheckbox" 

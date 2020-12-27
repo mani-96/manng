@@ -73,6 +73,9 @@
         cursor: pointer;
         align-items: center;
     }
+    li:not(.selected):hover {
+        background: #f1f1f1;
+    }
 
     .man-typeahead-label{
         position: relative;
