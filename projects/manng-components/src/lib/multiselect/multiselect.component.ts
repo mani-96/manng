@@ -62,6 +62,9 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   @Input('overlayStyleClass')
   overlayStyleClass = '';
 
+  @Input('selectedLabelLength')
+  selectedLabelLength = 2;
+
   @Output('onSelect')
   onSelect = new EventEmitter<any>();
 
@@ -256,9 +259,9 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     this.allChecked = false; 
     if (filtered.length > 0) {
       if (!this.field) {
-        this.inputValue = filtered.length == 1 ? filtered[0] : (filtered.length + ' items selected');
+        this.inputValue = filtered.length <= this.selectedLabelLength ? filtered.slice(0, this.selectedLabelLength).join(', ') : (filtered.length + ' items selected');
       } else {
-        this.inputValue = filtered.length == 1 ? ObjectHelper.resolveFieldData(filtered[0], this.field) :(filtered.length + ' items selected');
+        this.inputValue = filtered.length <= this.selectedLabelLength ? filtered.slice(0, this.selectedLabelLength).map(key => ObjectHelper.resolveFieldData(key, this.field)).join(', ') :(filtered.length + ' items selected');
       }
       this.modelChanged(filtered);
     } else {

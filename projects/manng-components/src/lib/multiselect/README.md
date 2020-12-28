@@ -41,6 +41,7 @@ In the `component`
 | inputStyleClass |  | Style class for typeahead input |
 | overlayStyleClass |  | Style class for overlay panel |
 | optionTemplate |  | Template for options to show |
+| selectedLabelLength | 2 | Number of labels to show when selected|
 
 ## Output
 | Output | Description |
