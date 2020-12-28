@@ -63,10 +63,10 @@ export class TableComponent implements OnInit {
   sortChanged = new EventEmitter<any>();
 
   @Output()
-  rowSelected = new EventEmitter<any>();
+  rowClick = new EventEmitter<any>();
 
   @Output()
-  rowDblClicked = new EventEmitter<any>();
+  rowDblClick = new EventEmitter<any>();
 
 
   constructor(private changeDetectorRef: ChangeDetectorRef) { }
@@ -143,7 +143,7 @@ export class TableComponent implements OnInit {
     let path = ['target, firstChild, tagName'];
     if (event.srcElement.tagName.toLowerCase() != 'input' && 
     ObjectHelper.deepValueFetch(path, event) != 'input') {
-      this.rowSelected.emit(row)
+      this.rowClick.emit(row)
     }
 
   }
@@ -151,7 +151,7 @@ export class TableComponent implements OnInit {
     let path = ['target, firstChild, tagName'];
     if (event.srcElement.tagName.toLowerCase() != 'input' && 
     ObjectHelper.deepValueFetch(path, event) != 'input') {
-      this.rowDblClicked.emit(row)
+      this.rowDblClick.emit(row)
     }
 
   }
