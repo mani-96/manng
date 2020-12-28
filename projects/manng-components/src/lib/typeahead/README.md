@@ -64,6 +64,8 @@ searchItem(event) {
 | searchExternal | false | Doesn't search from options. Can be used with onKeydown output to show options after service call (Please refer to the example above) |
 | mandatorySelection | false | If no option is selected sets the input blank and value to '' |
 | debounceTime | 50 | Key debounce time for onKeydown output event |
+| openOnFocus | true | Bolean - If false, doesnt open overlay on focus. |
+| showDropdownIcon | false | Bolean - Show/hide dropdown icon on input. |
 | inputStyleClass |  | Style class for typeahead input |
 | overlayStyleClass |  | Style class for overlay panel |
 | optionTemplate |  | Template for options to show |

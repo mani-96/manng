@@ -69,13 +69,16 @@ export class TypeaheadComponent implements OnInit {
   debounceTime = 50;
 
   @Input('inputStyleClass')
-  inputStyleClass = ''
+  inputStyleClass = '';
 
   @Input('overlayStyleClass')
-  overlayStyleClass = ''
+  overlayStyleClass = '';
 
   @Input('optionTemplate')
-  optionTemplate
+  optionTemplate;
+
+  @Input('openOnFocus')
+  openOnFocus = true;
 
   @Output()
   onKeydown = new EventEmitter<any>();
@@ -136,6 +139,9 @@ export class TypeaheadComponent implements OnInit {
 
   onInputFocus() {
     this.modelTouched(true);
+    if (!this.openOnFocus) {
+      return;
+    }
     if (!this.searchExternal) {
       if (!this.overlayVisible) {
         this.overlayVisible = true;
