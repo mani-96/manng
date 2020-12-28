@@ -60,7 +60,7 @@ export class TypeaheadComponent implements OnInit {
   }
 
   @Input('mandatorySelection')
-  mandatorySelection;
+  mandatorySelection = false;
 
   @Input('inputId')
   id = '';
