@@ -61,7 +61,7 @@ searchItem(event) {
 | field | | String - Value to be resolved if option is an object |
 | panelHeight | 200 |Number - Height of overlay panel in px |
 | disabled | false | Sets disabled state |
-| searchExternal | false | Doesn't search from options. Can be used with onKeydown output to show options after service call (Please refre to example) |
+| searchExternal | false | Doesn't search from options. Can be used with onKeydown output to show options after service call (Please refer to the example above) |
 | mandatorySelection | false | If no option is selected sets the input blank and value to '' |
 | debounceTime | 50 | Key debounce time for onKeydown output event |
 | inputStyleClass |  | Style class for typeahead input |
@@ -71,5 +71,5 @@ searchItem(event) {
 ## Output
 | Output | Description |
 | ------ | ----------- |
-| onKeydown | Emits the value entered by user in typeahead input |
+| onKeydown | Emits the value entered in typeahead input |
 

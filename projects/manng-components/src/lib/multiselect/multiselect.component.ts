@@ -51,10 +51,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   disabled = false;
 
   @Input('showSearch')
-  showSearch = false;
-
-  @Output('onSelect')
-  onSelect = new EventEmitter<any>();
+  showSearch = true;
 
   @Input('optionTemplate')
   optionTemplate
@@ -64,6 +61,10 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   @Input('overlayStyleClass')
   overlayStyleClass = '';
+
+  @Output('onSelect')
+  onSelect = new EventEmitter<any>();
+
 
 
   allChecked = false;
@@ -221,6 +222,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       }
       this.setInputValueOnCheck();
     }
+    this.onSelect.emit([]);
   } 
 
   optionClicked(value) {
@@ -249,7 +251,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
   
   setInputValueOnCheck() { 
-    let filtered: Array<any> = this.valuesSelected.slice()
+    let filtered: Array<any> = this.valuesSelected.slice();
+    this.onSelect.emit(filtered);
     this.allChecked = false; 
     if (filtered.length > 0) {
       if (!this.field) {
