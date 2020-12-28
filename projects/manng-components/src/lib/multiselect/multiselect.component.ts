@@ -141,6 +141,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       this.calculatedMaxHeight = this.scrollHeight;
       (this.el.nativeElement.children[0] as HTMLElement).classList.add('hide-panel');
     } else {
+      console.log('hiding')
       this.hideList();
     } 
   }
@@ -404,6 +405,10 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
         this.selectAll.nativeElement.focus();
         event.preventDefault();
       }
+    }
+    if (event.which == 32 ) {
+      this.toggleOpen();
+      event.preventDefault();
     }
   }
 
