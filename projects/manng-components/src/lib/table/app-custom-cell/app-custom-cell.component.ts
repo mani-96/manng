@@ -38,7 +38,7 @@ export class AppCustomCellComponent implements OnInit {
     } else if (this._columnSetting && this._columnSetting.valueType == 'html') {
       if (this._columnSetting && this._columnSetting.value) {
         this.colValue = this._columnSetting.value
-      } else {
+      } else if (this._columnSetting && this._columnSetting.valuePrepareFunction) {
         this.getPreparedValue();
       }
     }

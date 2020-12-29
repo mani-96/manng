@@ -4,7 +4,8 @@
         {{ colValue }}
     </div>
 </div>
-<div *ngIf="_columnSetting['valueType'] == 'html'" [innerHTML]="colValue"></div>
+<div *ngIf="_columnSetting['valueType'] == 'html' && !_columnSetting['columnTemplate']" [innerHTML]="colValue"></div>
+<ng-container *ngTemplateOutlet="_columnSetting['columnTemplate']; context: {$implicit: _rowData}"></ng-container>
 <div *ngIf="_columnSetting['valueType'] == 'custom'">
     <man-rendered-cell [rowData]="_rowData" [columnSetting]="_columnSetting"></man-rendered-cell>
 </div>
