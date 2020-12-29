@@ -83,7 +83,8 @@ export class TableComponent implements OnInit {
       rowClassFunction: (row) => '',
       columns: [],
       showLineNumber: true,
-      tableHeight: '280px',
+      tableHeight: '',
+      tableMaxHeight: '300px',
       striped: true,
       headerBackground: '#f8f9fa',
       showGridlines: false

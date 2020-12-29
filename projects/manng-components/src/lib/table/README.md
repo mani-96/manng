@@ -59,7 +59,8 @@ Below properties can be overridden to control table behaviour.
     rowClassFunction: (row) => '',
     columns: [], // Check below column options available
     showLineNumber: true,
-    tableHeight: '280px',
+    tableHeight: '',
+    tableMaxHeight: '300px',
     striped: true,
     headerBackground: '#f8f9fa',
     showGridlines: false

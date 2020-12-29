@@ -1,8 +1,26 @@
 {
   "name": "manng-components",
-  "version": "0.0.1",
+  "version": "0.0.12",
   "peerDependencies": {
     "@angular/common": "^8.0.0",
     "@angular/core": "^8.0.0"
-  }
+  },
+  "author": {
+    "name": "Manish Sharma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mani-96/manng"
+  },
+  "homepage": "https://github.com/mani-96/manng#readme",
+  "keywords": [
+    "angular",
+    "manng",
+    "manng components",
+    "table",
+    "component table",
+    "typeahead",
+    "multiselect",
+    "javascript"
+  ]
 }

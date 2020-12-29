@@ -1,4 +1,4 @@
-<div class="man-table-wrapper"[style.height]="_settings['tableHeight']">
+<div class="man-table-wrapper" [style.height]="_settings['tableHeight']" [style.maxHeight]="_settings['tableMaxHeight']">
     <table aria-describedby="table-for-records" role="grid" [class.gridlines]="_settings.showGridlines">
         <thead>
             <th class="pointer checkbox" *ngIf="_settings.showCheckbox" [style.background]="_settings.headerBackground" scope="checkbox">
