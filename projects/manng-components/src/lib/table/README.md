@@ -35,6 +35,38 @@ settings = {
 }
 ...
 
+### Column Template
+```python
+<man-table [settings]="settings" [data]="data">
+    <ng-template let-rowData #editButton>
+        <button (click)="editClicked(rowData)">Edit</button>
+    </ng-template>
+</man-table>
+```
+In the `component`
+```
+....
+
+@ViewChild('editButton, {static: true})
+editButton
+
+...
+settings = {
+    columns: [
+      {
+        label: 'Column 1',
+        valueType: 'key-value',
+        value: 'value1'
+      },
+      {
+        label: 'Column 2',
+        valueType: '',
+        columnTemplate: editButton
+      }
+    ]
+}
+...
+
 data = []
 ...
 ngOnInit() {
@@ -44,6 +76,12 @@ ngOnInit() {
             value2: 'Column2 Value' + i
         })
     }
+}
+
+...
+
+editClicked(rowData) {
+    console.log(rowData)
 }
 
 ```
@@ -84,6 +122,7 @@ Below properties can be overridden to control table behaviour.
     ellipsis: true,
     canSort: true,
     sortColumnName: '',
+    columnTemplate: ''
     
 }
 ```
@@ -101,6 +140,7 @@ Below properties can be overridden to control table behaviour.
 | ellipsis | Boolean - Make the value ellipsis |
 | maxWidth | Sets max width style on column. |
 | minWidth | sets min width style on column |
+| columnTemplate | Template that should be rendered in column. Use this to bind events |
 ###### Note- Table layout is not set to fixed. Browser would use internal table layout algorithm to determine column width.
 
 ## Output

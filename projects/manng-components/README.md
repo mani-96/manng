@@ -29,6 +29,19 @@ imports: [...
 Below are the components available under manng-components
 
 # Table
+## Usage
+
+In `App module` import accordion module
+```python
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ManngComponentsModule } from 'ngx-accordion-from-object'
+...
+
+imports: [...
+    BrowserAnimationModule,
+    ManngComponentsModule
+  ]
+```
 
 ### Basic usage
 ```python
@@ -53,6 +66,38 @@ settings = {
 }
 ...
 
+### Column Template
+```python
+<man-table [settings]="settings" [data]="data">
+    <ng-template let-rowData #editButton>
+        <button (click)="editClicked(rowData)">Edit</button>
+    </ng-template>
+</man-table>
+```
+In the `component`
+```
+....
+
+@ViewChild('editButton, {static: true})
+editButton
+
+...
+settings = {
+    columns: [
+      {
+        label: 'Column 1',
+        valueType: 'key-value',
+        value: 'value1'
+      },
+      {
+        label: 'Column 2',
+        valueType: '',
+        columnTemplate: editButton
+      }
+    ]
+}
+...
+
 data = []
 ...
 ngOnInit() {
@@ -62,6 +107,12 @@ ngOnInit() {
             value2: 'Column2 Value' + i
         })
     }
+}
+
+...
+
+editClicked(rowData) {
+    console.log(rowData)
 }
 
 ```
@@ -77,7 +128,8 @@ Below properties can be overridden to control table behaviour.
     rowClassFunction: (row) => '',
     columns: [], // Check below column options available
     showLineNumber: true,
-    tableHeight: '280px',
+    tableHeight: '',
+    tableMaxHeight: '300px',
     striped: true,
     headerBackground: '#f8f9fa',
     showGridlines: false
@@ -101,6 +153,7 @@ Below properties can be overridden to control table behaviour.
     ellipsis: true,
     canSort: true,
     sortColumnName: '',
+    columnTemplate: ''
     
 }
 ```
@@ -118,15 +171,17 @@ Below properties can be overridden to control table behaviour.
 | ellipsis | Boolean - Make the value ellipsis |
 | maxWidth | Sets max width style on column. |
 | minWidth | sets min width style on column |
+| columnTemplate | Template that should be rendered in column. Use this to bind events |
 ###### Note- Table layout is not set to fixed. Browser would use internal table layout algorithm to determine column width.
 
-### Output
+## Output
 | Output | Description |
 | ------ | ----------- |
 | checkChanged | Array - Emits the row data for which checkboxes are selected |
 | sortChanged | Emits the sortColumnName are order in which sort should happen. {column: '', order: 'ASC|DESC'}|
 | rowClick | Emit the row data on table row click |
 | rowDblClick | Emit the row data on table row double click |
+
 #
 #
 #
@@ -166,7 +221,67 @@ Below properties can be overridden to control table behaviour.
 | ------ | ----------- |
 | onSelect | Emits the values selected. If no value is selected emits empty array [] |
 
+
 #
+#
+#
+## TabView
+## Usage
+
+In `App module` import accordion module
+```python
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ManngComponentsModule } from 'ngx-accordion-from-object'
+...
+
+imports: [...
+    BrowserAnimationModule,
+    ManngComponentsModule
+  ]
+```
+In the `component`
+
+### Basic usage
+```python
+    <man-tabview [(openTabIndex)]="openTabIndex" [maxHeight]="300">
+        <man-tabpanel header="Tab 1">
+            Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
+        </man-tabpanel>
+        <man-tabpanel header="Tab 1">
+            Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
+        </man-tabpanel>
+        <man-tabpanel header="Tab 1">
+            Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
+        </man-tabpanel>
+    </man-tabview>
+```
+
+### Header Templating option
+```python
+    <man-tabview [(openTabIndex)]="openTabIndex" [maxHeight]="300">
+        <man-tabpanel [headerTemplate]="headerTemplate">
+            <ng-template #headerTemplate>
+                <img src="favicon.ico" width="25px"> Tab2
+            </ng-template>
+        </man-tabpanel>
+        <man-tabpanel header="Tab 1">
+            Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
+        </man-tabpanel>
+        <man-tabpanel header="Tab 1">
+            Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
+        </man-tabpanel>
+    </man-tabview>
+```
+
+
+
+## Inputs
+| Input | Description |
+| ----- | ------- | ----------- |
+| maxHeight | Number - Max height of tabview |
+| openTabIndex | Index of tab opened. Opened tab can be changed by passing index of tab to be opened |
+
+
 #
 #
 #
