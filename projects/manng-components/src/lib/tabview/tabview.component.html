@@ -1,0 +1,13 @@
+<div class="man-tabview-wrapper">
+    <div class="man-tabview-header-wrapper">
+        <ul class="man-tabview-nav" #navigation>
+            <li tabindex="0" *ngFor="let tab of tabs; let idx = index"  (keydown.enter)="tabSelected(idx)" [ngClass]="tab.selected ? 'man-tab-selected' : ''" (click)="tabSelected(idx)">
+                <a *ngIf="!tab.headerTemplate">{{tab.header}}</a>
+                <ng-container *ngTemplateOutlet="tab.headerTemplate"></ng-container>
+            </li>
+        </ul>
+    </div>
+    <div class="man-tabview-panel-wrapper" [style.maxHeight.px]="panelMaxHeight">
+        <ng-content></ng-content>
+    </div>
+</div>

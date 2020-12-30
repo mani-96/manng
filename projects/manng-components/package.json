@@ -1,6 +1,6 @@
 {
   "name": "manng-components",
-  "version": "0.0.22",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/common": "^8.0.0",
     "@angular/core": "^8.0.0"
@@ -21,6 +21,9 @@
     "component table",
     "typeahead",
     "multiselect",
+    "tabview",
+    "panel",
+    "tab panel",
     "javascript"
   ]
 }

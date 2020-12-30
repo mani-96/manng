@@ -7,13 +7,15 @@ import { MultiselectComponent } from './multiselect/multiselect.component';
 import { AppCustomCellComponent } from './table/app-custom-cell/app-custom-cell.component';
 import { RenderedCellComponent } from './table/rendered-cell/rendered-cell.component';
 import { MultiselectItemComponent } from './multiselect/multiselect-item/multiselect-item.component';
+import { TabviewComponent } from './tabview/tabview.component';
+import { TabpanelComponent } from './tabview/tabpanel/tabpanel.component';
 
 
 
 @NgModule({
-  declarations: [ManngComponentsComponent, TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent, RenderedCellComponent, MultiselectItemComponent],
+  declarations: [ManngComponentsComponent, TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent, RenderedCellComponent, MultiselectItemComponent, TabviewComponent, TabpanelComponent],
   imports: [ CommonModule
   ],
-  exports: [ManngComponentsComponent, TableComponent, MultiselectComponent, TypeaheadComponent]
+  exports: [ManngComponentsComponent, TableComponent, MultiselectComponent, TypeaheadComponent, TabviewComponent, TabpanelComponent]
 })
 export class ManngComponentsModule { }
