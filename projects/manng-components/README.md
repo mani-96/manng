@@ -273,11 +273,9 @@ In the `component`
     </man-tabview>
 ```
 
-
-
 ## Inputs
 | Input | Description |
-| ----- | ------- | ----------- |
+| ----- | ----------- |
 | maxHeight | Number - Max height of tabview |
 | openTabIndex | Index of tab opened. Opened tab can be changed by passing index of tab to be opened |
 

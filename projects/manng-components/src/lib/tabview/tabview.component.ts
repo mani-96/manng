@@ -7,13 +7,20 @@ import { TabpanelComponent } from './tabpanel/tabpanel.component';
   styleUrls: ['./tabview.component.scss']
 })
 export class TabviewComponent implements OnInit {
-  _openTabIndex;
+  _openTabIndex = 0;
   _maxHeight;
   nav;
   panelMaxHeight
 
   @Input() get openTabIndex(): number {
       return this._openTabIndex;
+  }
+  set openTabIndex(val:number) {
+      this._openTabIndex = val;
+      if(this.tabs && this.tabs.length && this._openTabIndex != null && this.tabs.length > this._openTabIndex) {
+          this.findSelectedTab().selected = false;
+          this.tabs[this._openTabIndex].selected = true;
+      }
   }
 
   @Input()
@@ -29,14 +36,6 @@ export class TabviewComponent implements OnInit {
     if (nav) {
       this.nav = nav.nativeElement;
     }
-  }
-
-  set openTabIndex(val:number) {
-      this._openTabIndex = val;
-      if(this.tabs && this.tabs.length && this._openTabIndex != null && this.tabs.length > this._openTabIndex) {
-          this.findSelectedTab().selected = false;
-          this.tabs[this._openTabIndex].selected = true;
-      }
   }
 
   @Output()
