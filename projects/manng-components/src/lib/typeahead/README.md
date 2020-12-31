@@ -3,7 +3,7 @@
 In `App module` import accordion module
 ```python
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ManngComponentsModule } from 'ngx-accordion-from-object'
+import { ManngComponentsModule } from 'manng-components'
 ...
 
 imports: [...

@@ -15,7 +15,7 @@ After installation make sure ManngComponentsModule is imported in your app modul
 In `App module` import accordion module
 ```python
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ManngComponentsModule } from 'ngx-accordion-from-object'
+import { ManngComponentsModule } from 'manng-components'
 ...
 
 imports: [...
@@ -34,7 +34,7 @@ Below are the components available under manng-components
 In `App module` import accordion module
 ```python
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ManngComponentsModule } from 'ngx-accordion-from-object'
+import { ManngComponentsModule } from 'manng-components'
 ...
 
 imports: [...
@@ -231,7 +231,7 @@ Below properties can be overridden to control table behaviour.
 In `App module` import accordion module
 ```python
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ManngComponentsModule } from 'ngx-accordion-from-object'
+import { ManngComponentsModule } from 'manng-components'
 ...
 
 imports: [...
