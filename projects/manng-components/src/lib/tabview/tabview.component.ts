@@ -94,6 +94,7 @@ export class TabviewComponent implements OnInit {
           this.initTabs();
       });
   }
+
   ngAfterViewInit() {
     this.setPanelMaxHeight();
   }
@@ -105,6 +106,13 @@ export class TabviewComponent implements OnInit {
   
   initTabs(): void {
       this.tabs = this.tabPanels.toArray();
+      // This check might not be needed
+      if (this.tabs) {
+        for (let i=0; i<this.tabs.length; i++) {
+          this.tabs[i].componentInstance = this;
+          this.tabs[i].index = i;
+        }
+      }
       let selectedTab: TabpanelComponent = this.findSelectedTab();
       if(!selectedTab && this.tabs.length) {
           if(this.openTabIndex != null && this.tabs.length > this.openTabIndex && !this.tabs[this.openTabIndex].disable)
@@ -134,6 +142,13 @@ export class TabviewComponent implements OnInit {
 
   confirmSwitch(val: boolean) {
     this.confirmSwitchObservable.next(val);
+  }
+
+  static disableTab(event, instance: TabviewComponent, index) {
+    if (instance && instance.tabs) {
+      instance.tabs[index].disable = event;
+      instance.cd.detectChanges()
+    }    
   }
 
   ngOnDestroy(){
