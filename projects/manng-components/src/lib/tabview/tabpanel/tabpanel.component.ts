@@ -25,6 +25,9 @@ export class TabpanelComponent implements OnInit {
   @Input()
   confirmationMessage = 'Are you sure you want to move away from this tab';
 
+  @Input()
+  disable = false;
+
   set selected(val: boolean) {
       this._selected = val;
   }

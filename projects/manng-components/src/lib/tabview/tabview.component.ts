@@ -15,6 +15,7 @@ export class TabviewComponent implements OnInit {
   confirmationMessage = '';
   overlayVisible = false;
   confirmSwitchObservable = new Subject();
+  confirmSwitchObservableSubscription;
   stopTabChangePropogation = false;
 
   @Input() get openTabIndex(): number {
@@ -29,13 +30,16 @@ export class TabviewComponent implements OnInit {
     if ( currentTab && currentTab.confirmBeforeTabChange ) {
       this.overlayVisible = true;
       this.confirmationMessage = this.tabs[this.openTabIndex].confirmationMessage;
-      this.confirmSwitchObservable.subscribe(data => {
+      this.confirmSwitchObservableSubscription = this.confirmSwitchObservable.subscribe(data => {
         this.overlayVisible = false;
         if (data) {
           this.switchTab(val);
         } else {
           this.stopTabChangePropogation = true;
           this.openTabIndexChange.emit(this.openTabIndex);
+        }
+        if (this.confirmSwitchObservableSubscription) {
+          this.confirmSwitchObservableSubscription.unsubscribe()
         }
       })
     } else {
@@ -44,6 +48,11 @@ export class TabviewComponent implements OnInit {
   }
 
   switchTab(val: number) {
+    if (this.tabs && this.tabs[val].disable) {
+      this.stopTabChangePropogation = true;
+      this.openTabIndexChange.emit(this.openTabIndex);
+      return;
+    }
     this._openTabIndex = val;
     if(this.tabs && this.tabs.length && this._openTabIndex != null && this.tabs.length > this._openTabIndex) {
         this.findSelectedTab().selected = false;
@@ -81,7 +90,7 @@ export class TabviewComponent implements OnInit {
   ngAfterContentInit() {
       this.initTabs();
       
-      this.tabPanels.changes.subscribe(_ => {
+      this.tabPanels.changes.subscribe( _ => {
           this.initTabs();
       });
   }
@@ -98,7 +107,7 @@ export class TabviewComponent implements OnInit {
       this.tabs = this.tabPanels.toArray();
       let selectedTab: TabpanelComponent = this.findSelectedTab();
       if(!selectedTab && this.tabs.length) {
-          if(this.openTabIndex != null && this.tabs.length > this.openTabIndex)
+          if(this.openTabIndex != null && this.tabs.length > this.openTabIndex && !this.tabs[this.openTabIndex].disable)
               this.tabs[this.openTabIndex].selected = true;
           else
               this.tabs[0].selected = true;
@@ -117,11 +126,19 @@ export class TabviewComponent implements OnInit {
   }
 
   tabSelected(idx) {
+    if ( this.tabs[idx].disable) {
+      return;
+    }
     this.openTabIndexChange.emit(idx);
   }
 
   confirmSwitch(val: boolean) {
     this.confirmSwitchObservable.next(val);
+  }
+
+  ngOnDestroy(){
+    if (this.confirmSwitchObservableSubscription)
+      this.confirmSwitchObservable.unsubscribe();
   }
 
   @HostListener('window: resize')
