@@ -14,10 +14,16 @@ export class TabpanelComponent implements OnInit {
   }
 
   @Input()
-  header
+  header;
 
   @Input()
-  headerTemplate
+  headerTemplate;
+
+  @Input()
+  confirmBeforeTabChange = false;
+  
+  @Input()
+  confirmationMessage = 'Are you sure you want to move away from this tab';
 
   set selected(val: boolean) {
       this._selected = val;

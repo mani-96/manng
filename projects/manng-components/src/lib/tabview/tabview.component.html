@@ -11,3 +11,17 @@
         <ng-content></ng-content>
     </div>
 </div>
+
+<div class="man-confirmation-overlay" [ngClass]="[overlayVisible ? 'show-overlay' : 'man-hide-overlay']">
+    <div class="confirmation-content">
+        <div class="man-confirmation-dialog">
+            <div class="message">
+                {{ confirmationMessage }}
+            </div>
+            <div class="action-buttons">
+                <button class="confirm-button man-overlay-yes" (click)="confirmSwitch(true)">Yes</button>
+                <button class="confirm-button man-overlay-no" (click)="confirmSwitch(false)">No</button>
+            </div>
+        </div>
+    </div>
+</div>
