@@ -151,6 +151,14 @@ export class TabviewComponent implements OnInit {
     }    
   }
 
+  static updateShowConfirmation(event, instance: TabviewComponent, index) {
+    if (instance && instance.tabs) {
+      instance.tabs[index].confirmBeforeTabChange = event;
+      instance.cd.detectChanges()
+    }   
+
+  }
+
   ngOnDestroy(){
     if (this.confirmSwitchObservableSubscription)
       this.confirmSwitchObservable.unsubscribe();

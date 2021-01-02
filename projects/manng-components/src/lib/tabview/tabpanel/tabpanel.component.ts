@@ -49,10 +49,16 @@ export class TabpanelComponent implements OnInit {
     if (changes.disable && this.componentInstance && changes.disable.currentValue != changes.disable.previousValue) {
       TabviewComponent.disableTab(changes.disable.currentValue, this.componentInstance, this.index)
     }
+    if (this.componentInstance && changes.confirmBeforeTabChange && changes.confirmBeforeTabChange.currentValue != changes.confirmBeforeTabChange.previousValue) 
+     TabviewComponent.updateShowConfirmation(changes.confirmBeforeTabChange.currentValue, this.componentInstance, this.index)
     // Adding for initial loading. Component instance is not available at the very beggining
-    if (!this.componentInstance && changes.disable && changes.disable.currentValue != changes.disable.previousValue) {
+    if (!this.componentInstance) {
       setTimeout( () => {
-        TabviewComponent.disableTab(changes.disable.currentValue, this.componentInstance, this.index)
+        if (!this.componentInstance) return;
+        if (changes.disable && changes.disable.currentValue != changes.disable.previousValue)
+          TabviewComponent.disableTab(changes.disable.currentValue, this.componentInstance, this.index);
+         if (changes.confirmBeforeTabChange && changes.confirmBeforeTabChange.currentValue != changes.confirmBeforeTabChange.previousValue) 
+          TabviewComponent.updateShowConfirmation(changes.confirmBeforeTabChange.currentValue, this.componentInstance, this.index)
       })
     }
   }

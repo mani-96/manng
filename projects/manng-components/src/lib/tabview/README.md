@@ -52,3 +52,11 @@ In the `component`
 | ----- | ----------- |
 | maxHeight | Number - Max height of tabview |
 | openTabIndex | Index of tab opened. Opened tab can be changed by passing index of tab to be opened |
+
+## Tabpanel Inputs
+| Input | Description |
+| ----- | ----------- |
+| header | String - Tab header string|
+| disable | boolean - Set disable state. When disabled tab can't be navigated on. If programatic navigation is tried on disabled tab, current tab would remain active |
+| confirmBeforeTabChange | boolean - Show a pop-up before changing the tab and only navigates if user accept |
+| confirmationMessage | String - Message to be displayed in confirmation pop-up |
