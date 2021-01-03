@@ -94,6 +94,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   searchInput = '';
 
+  searchTimeout;
+
   constructor(private el: ElementRef, private cd: ChangeDetectorRef, private renderer: Renderer2) { }
     
   modelChanged: any = () => {}
@@ -141,12 +143,14 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       this.calculatedMaxHeight = this.scrollHeight;
       (this.el.nativeElement.children[0] as HTMLElement).classList.add('hide-panel');
     } else {
-      console.log('hiding')
       this.hideList();
     } 
   }
 
   show() {
+    if (this.appendedToBody) {
+      return;
+    }
     this.calculateLeftAndTopPosition();
     if (!this.appendedToBody) {
       document.body.appendChild(this.panel);
@@ -342,29 +346,37 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   ngOnDestroy() {
     this.hideList();
   }
-
   search(event) {
-    let value = event.target.value;
-    this.searchInput = value;
-    this.renderedOptions = []
-    if (value) {
-      if (this.field) {
-        for (let i=0; i<this.options.length; i++) {
-          if (ObjectHelper.resolveFieldData(this.options[i], this.field).indexOf(value) != -1) {
-            this.renderedOptions.push(this.options[i])
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout)
+    }
+    this.searchTimeout = setTimeout( () => {
+      let value = event.target.value;
+      this.searchInput = value;
+      this.renderedOptions = []
+      if (value) {
+        if (this.field) {
+          for (let i=0; i<this.options.length; i++) {
+            if (ObjectHelper.resolveFieldData(this.options[i], this.field).indexOf(value) != -1) {
+              this.renderedOptions.push(this.options[i])
+            }
+          }
+        } else {
+          for (let i=0; i<this.options.length; i++) {
+            if (this.options[i].indexOf(value) != -1) {
+              this.renderedOptions.push(this.options[i])
+            }
           }
         }
       } else {
-        for (let i=0; i<this.options.length; i++) {
-          if (this.options[i].indexOf(value) != -1) {
-            this.renderedOptions.push(this.options[i])
-          }
-        }
+        this.renderedOptions = this.options.slice(0, this.options.length);
       }
-    } else {
-      this.renderedOptions = this.options.slice(0, this.options.length);
-    }
-    this.getIsAllChecked();
+      this.getIsAllChecked();
+      setTimeout( () => {
+        this.calculateLeftAndTopPosition();
+        this.cd.detectChanges();
+      })
+    }, 50)
   }
 
   getIsAllChecked() {
