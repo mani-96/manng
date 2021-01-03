@@ -1,5 +1,5 @@
 <div class="multiselect-container">
-	<div tabindex="0" class="man-multiselect-input" [class.open]="overlayVisible"
+	<div [attr.tabindex]="disabled ? '-1' : '0'" class="man-multiselect-input" [class.open]="overlayVisible" [class.disable]="disabled"
 	(click)="toggleOpen()" [ngClass]="inputStyleClass" (keydown.esc)="escapeKeydown($event)" (keydown)="handleInputKeydown($event)">
 		<ng-container *ngIf="optionTemplate && (valuesSelected.length <= selectedLabelLength); else totalCount">
 			<ng-template ngFor let-option [ngForOf]="valuesSelected">
