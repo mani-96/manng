@@ -69,6 +69,7 @@ searchItem(event) {
 | inputStyleClass |  | Style class for typeahead input |
 | overlayStyleClass |  | Style class for overlay panel |
 | optionTemplate |  | Template for options to show |
+| noDataMsg |  | Msg to show when result length is 0 |
 
 ## Output
 | Output | Description |

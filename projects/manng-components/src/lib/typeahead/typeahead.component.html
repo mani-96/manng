@@ -1,9 +1,12 @@
 <div [id]="id" class="man-typeahead-wrapper" [class.disabled]="isDisabled" [ngClass]="[showDropdownIcon ? 'dropdown-icon' : '']">
     <input class="man-typeahead-input" #typeaheadInput [disabled]="isDisabled" (input)="valueEntered($event)" (focus)="onInputFocus()" (keydown)="onKeyDown($event)" [value]="inputValue" [ngClass]="inputStyleClass">
-    <ul #overlayPanel [ngClass]="overlayStyleClass" class="man-typeahead-overlay" *ngIf="overlayVisible" [style.top.px]="top" [style.width.px]="width" [style.left.px]="left" style="padding: 0px; margin: 0px" [style.maxHeight.px]="calculatedMaxHeight">
+    <ul #overlayPanel [class.hidden]="!appendedToBody" [ngClass]="overlayStyleClass" class="man-typeahead-overlay" *ngIf="overlayVisible" [style.top.px]="top" [style.width.px]="width" [style.left.px]="left" style="padding: 0px; margin: 0px" [style.maxHeight.px]="calculatedMaxHeight">
         <li class="man-typeahead-options" *ngFor="let option  of result; let idx=index" [ngClass]="[highlightedOptionIndex == idx ? 'man-option-highlighted' : '']" (click)="optionSelected(option)">
             <span *ngIf="!optionTemplate" class="man-typeahead-label">{{ getOptionValue(option) }}</span>
             <ng-container *ngTemplateOutlet="optionTemplate; context: {$implicit: option, index: idx}"></ng-container>
+        </li>
+        <li *ngIf="!result.length && noDataMsg" style="display: flex; justify-content: center; flex-wrap: wrap">
+            {{noDataMsg}}
         </li>
     </ul>
 </div>

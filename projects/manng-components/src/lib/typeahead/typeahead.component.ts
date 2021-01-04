@@ -80,6 +80,9 @@ export class TypeaheadComponent implements OnInit {
   @Input('openOnFocus')
   openOnFocus = true;
 
+  @Input('noDataMsg')
+  noDataMsg = "No data found"
+
   @Output()
   onKeydown = new EventEmitter<any>();
 
@@ -98,6 +101,7 @@ export class TypeaheadComponent implements OnInit {
   inputValue = '';
   highlightedOptionIndex = null;
   inputTimeout;
+  appendedToBody = false;
   
 
   modelChange: Function = () => {};
@@ -143,13 +147,14 @@ export class TypeaheadComponent implements OnInit {
       return;
     }
     if (!this.searchExternal) {
-      if (!this.overlayVisible) {
-        this.overlayVisible = true;
-      }
       if(this.onFocusListValues == 'filtered') {
         this.updateDropDownValue(this.inputValue);
       } else {
         this.updateDropDownValue('');
+      }
+      if (!this.overlayVisible) {
+        this.overlayVisible = true;
+        this.cd.detectChanges();
       }
     }
   }
@@ -179,8 +184,18 @@ export class TypeaheadComponent implements OnInit {
   }
 
   show() {
-    this.calculatedMaxHeight = this.panelHeight;
+    if (this.appendedToBody) {
+      this.setPanelProperties();
+      return;
+    }
+    this.setPanelProperties();
     document.body.appendChild(this.panel);
+    this.appendedToBody = true;
+    this.bindClickEventListener();
+  }
+
+  setPanelProperties() {
+    this.calculatedMaxHeight = this.panelHeight;
     let panelProp = DOMHandler.getPanelProperties(this.el.nativeElement.children[0], this.panel);
     this.top = panelProp.top;
     this.width = panelProp.width;
@@ -188,8 +203,12 @@ export class TypeaheadComponent implements OnInit {
     if (panelProp.height) {
       this.calculatedMaxHeight = panelProp.height
     }
-    this.bindClickEventListener()
     this.cd.detectChanges();
+    if (!this.appendedToBody) {
+      setTimeout( () => {
+        this.setPanelProperties()
+      }, 5)
+    }
   }
 
   hide() {
@@ -198,6 +217,7 @@ export class TypeaheadComponent implements OnInit {
       this.inputValue = ''
     }
     this.overlayVisible = false;
+    this.appendedToBody = false;
     this.unbindClickEventListener();
     this.highlightedOptionIndex = null;
   }
