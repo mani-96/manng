@@ -12,7 +12,7 @@
 			<span>{{inputValue}}</span>
 		</ng-template>
 	</div>
-    <ul class="man-panel" [class.hidePanel]="!appendedToBody" [ngClass]="overlayStyleClass" #panel *ngIf="overlayVisible" [style.width.px]="width" [style.maxHeight.px]="calculatedMaxHeight"
+    <ul class="man-panel" [class.hidePanel]="!appendedToBody" [class.removed]="!overlayVisible" [ngClass]="overlayStyleClass" #panel [style.width.px]="width" [style.maxHeight.px]="calculatedMaxHeight"
 	[style.top.px]="top" [style.left.px]=left (keydown.esc)="escapeKeydown($event)">
 		<div class="man-multiselect-header">
 			<li tabindex="1" #selectAll *ngIf="!showSearch" class="check-all" (keydown)="handleAllCheckboxKeydown($event)">

@@ -23,7 +23,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   set contentPanel(panel) {
     if (panel) {
       this.panel = panel.nativeElement;
-      this.show();
     }
   }
 
@@ -146,6 +145,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       if (!this.overlayVisible) { 
         this.overlayVisible = true;
         this.cd.detectChanges();
+        this.show();
       } else {
         this.hideList();
       } 
@@ -179,16 +179,11 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       this.calculatedMaxHeight = panelProp.height;
     }
     this.cd.detectChanges();
-    if (!this.appendedToBody) {
-      setTimeout( () => {
-        this.calculateLeftAndTopPosition();
-      }, 5)
-    }
   }
 
   hideList() {
+    document.body.removeChild(this.panel)
     this.overlayVisible = false;
-    this.panel = null;
     this.appendedToBody = false;
     this.unbindClickEventListener();
     this.cd.detectChanges();
