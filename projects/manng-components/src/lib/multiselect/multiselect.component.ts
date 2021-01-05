@@ -182,6 +182,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   hideList() {
+    if (!this.overlayVisible)
+      return;
     document.body.removeChild(this.panel)
     this.overlayVisible = false;
     this.appendedToBody = false;
