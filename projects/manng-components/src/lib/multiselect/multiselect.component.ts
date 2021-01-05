@@ -24,8 +24,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     if (panel) {
       this.panel = panel.nativeElement;
       this.show();
-    } else {
-      this.hideList();
     }
   }
 
@@ -96,6 +94,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   searchTimeout;
 
+  toggleTimeout;
+
   constructor(private el: ElementRef, private cd: ChangeDetectorRef, private renderer: Renderer2) { }
     
   modelChanged: any = () => {}
@@ -129,35 +129,36 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   registerOnTouched(fn) { 
     this.touched= fn; 
   }
+
   setDisabledState(val: boolean) {
     this.disabled = val;
   }
 
   toggleOpen() {
+    if (this.toggleTimeout) {
+      clearTimeout(this.toggleTimeout)
+    }
     if (this.disabled) {
       return;
     }
     this.touched();
-    if (!this.overlayVisible) { 
-      this.overlayVisible = true;
-      this.calculatedMaxHeight = this.scrollHeight;
-      (this.el.nativeElement.children[0] as HTMLElement).classList.add('hide-panel');
-    } else {
-      this.hideList();
-    } 
+    this.toggleTimeout = setTimeout( () => {
+      if (!this.overlayVisible) { 
+        this.overlayVisible = true;
+        this.cd.detectChanges();
+      } else {
+        this.hideList();
+      } 
+    })
   }
 
   show() {
+    this.calculateLeftAndTopPosition();
     if (this.appendedToBody) {
       return;
     }
-    this.calculateLeftAndTopPosition();
-    if (!this.appendedToBody) {
-      document.body.appendChild(this.panel);
-      this.appendedToBody = true;
-    }
-    (this.el.nativeElement.children[0] as HTMLElement).classList.remove('hide-panel');
-    this.cd.detectChanges();
+    document.body.appendChild(this.panel);
+    this.appendedToBody = true;
     if (this.showSearch && this.inputSearch) {
       this.focusSearchInput();
     } else {
@@ -169,6 +170,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   calculateLeftAndTopPosition() {
+    this.calculatedMaxHeight = this.scrollHeight;
     let panelProp = DOMHandler.getPanelProperties(this.el.nativeElement, this.panel);
     this.top = panelProp.top;
     this.width = panelProp.width;
@@ -176,13 +178,18 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     if (panelProp.height) {
       this.calculatedMaxHeight = panelProp.height;
     }
+    this.cd.detectChanges();
+    if (!this.appendedToBody) {
+      setTimeout( () => {
+        this.calculateLeftAndTopPosition();
+      }, 5)
+    }
   }
 
   hideList() {
     this.overlayVisible = false;
     this.panel = null;
     this.appendedToBody = false;
-    (this.el.nativeElement.children[0] as HTMLElement).classList.remove('hide-panel');
     this.unbindClickEventListener();
     this.cd.detectChanges();
   }
@@ -346,6 +353,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   ngOnDestroy() {
     this.hideList();
   }
+
   search(event) {
     if (this.searchTimeout) {
       clearTimeout(this.searchTimeout)
@@ -372,10 +380,6 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
         this.renderedOptions = this.options.slice(0, this.options.length);
       }
       this.getIsAllChecked();
-      setTimeout( () => {
-        this.calculateLeftAndTopPosition();
-        this.cd.detectChanges();
-      })
     }, 50)
   }
 

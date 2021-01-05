@@ -10,7 +10,7 @@
     }
 }
 
-.multiselect-container.hide-panel{
+.hidePanel{
     & ul {
         visibility: hidden;
         position: fixed;
@@ -135,6 +135,7 @@ ul.man-panel {
     padding: 0px 2px;
     margin: 0;
     list-style: none;
+    opacity: 0;
     z-index: 999;
     color: #495057;
     border: 1px solid lightgray;
@@ -143,7 +144,7 @@ ul.man-panel {
     overflow-y: auto;
     margin-top: 1px;
     animation-name: fadeIn;
-    animation-duration: 0.10s;
+    animation-duration: 0.15s;
     animation-fill-mode: forwards;
     overflow-y: hidden;
     box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
