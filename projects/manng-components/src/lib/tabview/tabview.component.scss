@@ -1,12 +1,14 @@
 .man-tabview-nav {
     list-style: none;
     display: flex;
-    flex-wrap: wrap;
+    // flex-wrap: wrap;
     margin: 0;
     padding: 0;     
     & li {
         border: 2px solid transparent;
         outline: transparent;
+        transition: 350ms cubic-bezier(0.35, 0, 0.25, 1);
+        white-space: nowrap;
         cursor: pointer;
         &:focus,&:hover{
             border-bottom: 1px solid gray;
@@ -20,9 +22,35 @@
     }
 }
 
+.man-tabview-header-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+.man-navigation-scroll {
+    min-width: fit-content;
+    transition: 350ms cubic-bezier(0.35, 0, 0.25, 1);
+}
 .man-tab-selected {
     color: #2196F3;
     border-bottom: 2px solid #2196F3!important;
+}
+
+.arrow {
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    padding: 3px;
+  }
+  
+.right {
+transform: rotate(-45deg);
+-webkit-transform: rotate(-45deg);
+}
+
+.left {
+transform: rotate(135deg);
+-webkit-transform: rotate(135deg);
 }
 
 .disable {
@@ -34,6 +62,7 @@
     border: 1px solid #e2e3e4;
     padding: 0.2rem;
     overflow: auto;
+    transition: height 350ms cubic-bezier(0.35, 0, 0.25, 1);
 }
 
 .man-confirmation-overlay {
@@ -79,7 +108,35 @@
 .message {
     white-space: pre-wrap;
 }
-
+.man-nav-button {
+    cursor: pointer;
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    user-select: none;
+    vertical-align: middle;
+    text-align: center;
+    display: inlin-block;
+    font-weight: 400;
+    border: 1px solid transparent;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    background-color: rgb(235, 233, 233);
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    position: absolute;
+    outline: none;
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
+}
+.right-btn {
+    right: 0px;
+    top: 5px
+}
+.left-btn {
+    left: 0px;
+    top: 5px;
+}
 .confirm-button {
     cursor: pointer;
     padding: .25rem .5rem;

@@ -1,13 +1,17 @@
 <div class="man-tabview-wrapper">
-    <div class="man-tabview-header-wrapper">
-        <ul class="man-tabview-nav" #navigation>
-            <li tabindex="0" *ngFor="let tab of tabs; let idx = index"  (keydown.enter)="tabSelected(idx)" [ngClass]="[tab.selected ? 'man-tab-selected' : '', tab.disable ? 'disable' : '']" (click)="tabSelected(idx)">
-                <a *ngIf="!tab.headerTemplate">{{tab.header}}</a>
-                <ng-container *ngTemplateOutlet="tab.headerTemplate"></ng-container>
-            </li>
-        </ul>
+    <div class="man-tabview-header-wrapper" #scroll [style.width]="navWidth">
+        <div class="man-navigation-scroll" [ngStyle]="{'transform': 'translateX(' + currentTranslate + 'px)'}">
+            <ul class="man-tabview-nav" #navigation>
+                <li tabindex="0" *ngFor="let tab of tabs; let idx = index"  (keydown.enter)="tabSelected(idx)" [ngClass]="[tab.selected ? 'man-tab-selected' : '', tab.disable ? 'disable' : '']" (click)="tabSelected(idx)">
+                    <a *ngIf="!tab.headerTemplate">{{tab.header}}</a>
+                    <ng-container *ngTemplateOutlet="tab.headerTemplate"></ng-container>
+                </li>
+            </ul>
+        </div>
+        <button *ngIf="hasNavigation" class="man-nav-button right-btn" (mousedown)="showRight($event)"><i class="arrow right"></i></button>
+        <button *ngIf="hasNavigation" class="man-nav-button left-btn" (mousedown)="showLeft($event)"><i class="arrow left"></i></button>
     </div>
-    <div class="man-tabview-panel-wrapper" [style.maxHeight.px]="panelMaxHeight">
+    <div class="man-tabview-panel-wrapper" #panel [style.maxHeight.px]="panelMaxHeight">
         <ng-content></ng-content>
     </div>
 </div>

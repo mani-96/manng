@@ -8,6 +8,11 @@ import { Subject } from 'rxjs';
   styleUrls: ['./tabview.component.scss']
 })
 export class TabviewComponent implements OnInit {
+  @ViewChild('scroll', {static : false})
+  set scroll(val) {
+    this.scrollPanel = val.nativeElement;
+  }
+
   _openTabIndex = 0;
   _maxHeight;
   nav;
@@ -17,10 +22,20 @@ export class TabviewComponent implements OnInit {
   confirmSwitchObservable = new Subject();
   confirmSwitchObservableSubscription;
   stopTabChangePropogation = false;
+  hasNavigation = false;
+  currentTranslate = 0;
+  scrollPanel;
 
   @Input() get openTabIndex(): number {
       return this._openTabIndex;
   }
+  
+  @Input('navWidth')
+  navWidth = "100%";
+
+  @Input('scrollJump')
+  scrollJump = 100;
+
   set openTabIndex(val:number) {
     if (this.stopTabChangePropogation) {
       this.stopTabChangePropogation = false;
@@ -97,12 +112,35 @@ export class TabviewComponent implements OnInit {
 
   ngAfterViewInit() {
     this.setPanelMaxHeight();
+    this.setHasNavigation()
   }
 
   setPanelMaxHeight() {
     this.panelMaxHeight = this._maxHeight - this.nav.getBoundingClientRect().height;
     this.cd.detectChanges();
   }
+
+  setHasNavigation() {
+    this.hasNavigation = ( this.nav.getBoundingClientRect().width - this.scrollPanel.getBoundingClientRect().width ) > 1 ? true : false;
+    if (this.hasNavigation) {
+      this.currentTranslate = 30;
+    } else {
+      this.currentTranslate = 0;
+    }
+    this.cd.detectChanges();
+  }
+
+  showRight(event) {
+    if (event.which != 1) return;
+    let widthDiff = this.scrollPanel.getBoundingClientRect().width - this.nav.getBoundingClientRect().width - 30;
+    this.currentTranslate =  (this.currentTranslate - this.scrollJump) > widthDiff  ? (this.currentTranslate - this.scrollJump) : widthDiff;
+  }
+
+  showLeft(event) {
+    if (event.which != 1) return;
+    this.currentTranslate =  (this.currentTranslate + this.scrollJump) < 30  ? (this.currentTranslate + this.scrollJump) : 30;
+  }
+
   
   initTabs(): void {
       this.tabs = this.tabPanels.toArray();
@@ -167,6 +205,7 @@ export class TabviewComponent implements OnInit {
   @HostListener('window: resize')
   resize() {
     this.setPanelMaxHeight();
+    this.setHasNavigation();
   }
   
   @HostListener('document: keydown', ['$event'])

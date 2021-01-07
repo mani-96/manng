@@ -277,6 +277,8 @@ In the `component`
 | Input | Description |
 | ----- | ----------- |
 | maxHeight | Number - Max height of tabview |
+| navWidth | Sets the width of tab header. If tabs overflow, would show navigation buttons |
+| scrollJump | Number - How much should tab header move left or right when clicked on navigation buttons |
 | openTabIndex | Index of tab opened. Opened tab can be changed by passing index of tab to be opened |
 
 
