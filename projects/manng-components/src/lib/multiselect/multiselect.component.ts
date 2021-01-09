@@ -159,12 +159,8 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     }
     document.body.appendChild(this.panel);
     this.appendedToBody = true;
-    if (this.showSearch && this.inputSearch) {
-      this.focusSearchInput();
-    } else {
-      if (this.selectAll) {
-        this.selectAll.nativeElement.focus();
-      }
+    if (this.selectAll && !this.showSearch) {
+      this.selectAll.nativeElement.focus();
     }
     this.bindClickEventListener();
   }

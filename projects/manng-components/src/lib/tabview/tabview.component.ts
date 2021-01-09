@@ -14,17 +14,30 @@ export class TabviewComponent implements OnInit {
   }
 
   _openTabIndex = 0;
+
   _maxHeight;
+
   nav;
+  
   panelMaxHeight;
+  
   confirmationMessage = '';
+  
   overlayVisible = false;
+  
   confirmSwitchObservable = new Subject();
+  
   confirmSwitchObservableSubscription;
+  
   stopTabChangePropogation = false;
+  
   hasNavigation = false;
+  
   currentTranslate = 0;
+  
   scrollPanel;
+
+  resizeTimeout;
 
   @Input() get openTabIndex(): number {
       return this._openTabIndex;
@@ -223,8 +236,14 @@ export class TabviewComponent implements OnInit {
 
   @HostListener('window: resize')
   resize() {
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout)
+    }
     this.setPanelMaxHeight();
     this.setHasNavigation();
+    this.resizeTimeout = setTimeout( () => {
+      this.setTranslateOnTabSelection();
+    }, 100)
   }
   
   @HostListener('document: keydown', ['$event'])
