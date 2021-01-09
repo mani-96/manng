@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { TabviewComponent } from '../tabview.component';
 
 @Component({
@@ -8,7 +8,7 @@ import { TabviewComponent } from '../tabview.component';
 })
 export class TabpanelComponent implements OnInit {
   
-  _selected;
+  _selected = false;
   _disable = true;
     
   @Input() 
@@ -17,6 +17,7 @@ export class TabpanelComponent implements OnInit {
   }
   set selected(val: boolean) {
       this._selected = val;
+      this.cd.detectChanges();
   }
 
   @Input()
@@ -40,7 +41,7 @@ export class TabpanelComponent implements OnInit {
   @Input()
   componentInstance
 
-  constructor() { }
+  constructor(private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
   }

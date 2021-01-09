@@ -72,6 +72,10 @@ export class TabviewComponent implements OnInit {
     if(this.tabs && this.tabs.length && this._openTabIndex != null && this.tabs.length > this._openTabIndex) {
         this.findSelectedTab().selected = false;
         this.tabs[this._openTabIndex].selected = true;
+          setTimeout( () => {
+            this.setTranslateOnTabSelection();
+            this.cd.detectChanges();
+          })
     }
   }
 
@@ -110,37 +114,6 @@ export class TabviewComponent implements OnInit {
       });
   }
 
-  ngAfterViewInit() {
-    this.setPanelMaxHeight();
-    this.setHasNavigation()
-  }
-
-  setPanelMaxHeight() {
-    this.panelMaxHeight = this._maxHeight - this.nav.getBoundingClientRect().height;
-    this.cd.detectChanges();
-  }
-
-  setHasNavigation() {
-    this.hasNavigation = ( this.nav.getBoundingClientRect().width - this.scrollPanel.getBoundingClientRect().width ) > 1 ? true : false;
-    if (this.hasNavigation) {
-      this.currentTranslate = 30;
-    } else {
-      this.currentTranslate = 0;
-    }
-    this.cd.detectChanges();
-  }
-
-  showRight(event) {
-    if (event.which != 1) return;
-    let widthDiff = this.scrollPanel.getBoundingClientRect().width - this.nav.getBoundingClientRect().width - 30;
-    this.currentTranslate =  (this.currentTranslate - this.scrollJump) > widthDiff  ? (this.currentTranslate - this.scrollJump) : widthDiff;
-  }
-
-  showLeft(event) {
-    if (event.which != 1) return;
-    this.currentTranslate =  (this.currentTranslate + this.scrollJump) < 30  ? (this.currentTranslate + this.scrollJump) : 30;
-  }
-
   
   initTabs(): void {
       this.tabs = this.tabPanels.toArray();
@@ -153,11 +126,57 @@ export class TabviewComponent implements OnInit {
       }
       let selectedTab: TabpanelComponent = this.findSelectedTab();
       if(!selectedTab && this.tabs.length) {
-          if(this.openTabIndex != null && this.tabs.length > this.openTabIndex && !this.tabs[this.openTabIndex].disable)
-              this.tabs[this.openTabIndex].selected = true;
-          else
-              this.tabs[0].selected = true;
+        if(this.openTabIndex != null && this.tabs.length > this.openTabIndex && !this.tabs[this.openTabIndex].disable)
+            this.tabs[this.openTabIndex].selected = true;
+        else
+            this.tabs[0].selected = true;
       }
+  }
+
+  ngAfterViewInit() {
+    this.setPanelMaxHeight();
+    this.setHasNavigation();
+    this.setTranslateOnTabSelection();
+    this.cd.detectChanges();
+  }
+
+  setPanelMaxHeight() {
+    this.panelMaxHeight = this._maxHeight - this.nav.getBoundingClientRect().height;
+  }
+
+  setHasNavigation() {
+    this.hasNavigation = ( this.nav.getBoundingClientRect().width - this.scrollPanel.getBoundingClientRect().width ) > 1 ? true : false;
+    if (this.hasNavigation) {
+      this.currentTranslate = 30;
+    } else {
+      this.currentTranslate = 0;
+    }
+  }
+
+  setTranslateOnTabSelection() {
+    if (!this.scrollPanel)
+      return;
+    if (this.hasNavigation) {
+      let selectedEl = this.scrollPanel.querySelector('.man-tab-selected');
+      let scrollPanelWidth = this.scrollPanel.getBoundingClientRect().width
+      let pos = (selectedEl.offsetLeft + 30) + this.currentTranslate;
+      if (pos > scrollPanelWidth) {
+        this.currentTranslate = -( pos - scrollPanelWidth + selectedEl.offsetWidth)
+      } else if (pos < 30) {
+        this.currentTranslate = 30;
+      }
+    }
+  }
+
+  showRight(event) {
+    if (event.which != 1) return;
+    let widthDiff = this.scrollPanel.getBoundingClientRect().width - this.nav.getBoundingClientRect().width - 30;
+    this.currentTranslate =  (this.currentTranslate - this.scrollJump) > widthDiff  ? (this.currentTranslate - this.scrollJump) : widthDiff;
+  }
+
+  showLeft(event) {
+    if (event.which != 1) return;
+    this.currentTranslate =  (this.currentTranslate + this.scrollJump) < 30  ? (this.currentTranslate + this.scrollJump) : 30;
   }
   
   findSelectedTab() {
