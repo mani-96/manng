@@ -184,6 +184,7 @@ export class TypeaheadComponent implements OnInit {
   }
 
   show() {
+    console.log('here')
     if (this.appendedToBody) {
       this.setPanelProperties();
       return;
@@ -234,7 +235,7 @@ export class TypeaheadComponent implements OnInit {
     this.selectedValue = option;
     this.inputValue = this.field ? ObjectHelper.resolveFieldData(option, this.field) : option;
     this.typeaheadInput.nativeElement.focus();
-    this.overlayVisible = false;
+    this.hide();
     this.modelChange(option)
   }
 
