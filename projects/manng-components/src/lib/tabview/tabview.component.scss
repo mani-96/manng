@@ -128,13 +128,14 @@ transform: rotate(135deg);
     width: 35px;
     height: 35px;
     border-radius: 50%;
+    border: 1px solid lightgray;
     position: absolute;
     outline: none;
     box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 1px 3px 0 rgba(0,0,0,.12);
 }
 .right-btn {
     right: 0px;
-    top: 5px
+    top: 5px;
 }
 .left-btn {
     left: 0px;

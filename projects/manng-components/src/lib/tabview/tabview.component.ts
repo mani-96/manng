@@ -173,7 +173,7 @@ export class TabviewComponent implements OnInit {
       let selectedEl = this.scrollPanel.querySelector('.man-tab-selected');
       let scrollPanelWidth = this.scrollPanel.getBoundingClientRect().width
       let pos = (selectedEl.offsetLeft + 30) + this.currentTranslate;
-      if (pos > scrollPanelWidth) {
+      if (pos > (scrollPanelWidth - 30)) {
         this.currentTranslate = -( pos - scrollPanelWidth + selectedEl.offsetWidth)
       } else if (pos < 30) {
         this.currentTranslate = 30;

@@ -1,14 +1,22 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, Output, ViewChild, ElementRef, HostListener, ChangeDetectorRef, Renderer2, EventEmitter } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, Output, ViewChild, ElementRef, HostListener, ChangeDetectorRef, Renderer2, EventEmitter, forwardRef } from '@angular/core';
 import { DOMHandler } from '../DOMHandler';
 import { ObjectHelper } from '../ObjectHelper';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+
+const typeaheadFormValueAccessor = {
+  provide: NG_VALUE_ACCESSOR,
+  multi: true,
+  useExisting: forwardRef( () => TypeaheadComponent)
+  };
 
 @Component({
   selector: 'man-typeahead',
   templateUrl: './typeahead.component.html',
   styleUrls: ['./typeahead.component.scss'],
+  providers: [typeaheadFormValueAccessor],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TypeaheadComponent implements OnInit {
+export class TypeaheadComponent implements OnInit, ControlValueAccessor {
 
   @ViewChild('overlayPanel', {static: false})
   set overlayPanel(value) {
@@ -184,7 +192,6 @@ export class TypeaheadComponent implements OnInit {
   }
 
   show() {
-    console.log('here')
     if (this.appendedToBody) {
       this.setPanelProperties();
       return;
