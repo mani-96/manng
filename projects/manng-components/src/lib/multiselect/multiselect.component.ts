@@ -175,6 +175,13 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       this.calculatedMaxHeight = panelProp.height;
     }
     this.cd.detectChanges();
+    // Recalculate position if just opened and not appended to body.
+    // Doing this here because when this is called initially height seems to be off which makes panel overflow to bottom
+    if (!this.appendedToBody) {
+      setTimeout( () => {
+        this.calculateLeftAndTopPosition();
+      }, 5)
+    }
   }
 
   hideList() {
