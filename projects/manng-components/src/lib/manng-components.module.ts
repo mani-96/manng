@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common'
-import { ManngComponentsComponent } from './manng-components.component';
 import { TableComponent } from './table/table.component';
 import { TypeaheadComponent } from './typeahead/typeahead.component';
 import { MultiselectComponent } from './multiselect/multiselect.component';
@@ -13,9 +12,9 @@ import { TabpanelComponent } from './tabview/tabpanel/tabpanel.component';
 
 
 @NgModule({
-  declarations: [ManngComponentsComponent, TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent, RenderedCellComponent, MultiselectItemComponent, TabviewComponent, TabpanelComponent],
+  declarations: [TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent, RenderedCellComponent, MultiselectItemComponent, TabviewComponent, TabpanelComponent],
   imports: [ CommonModule
   ],
-  exports: [ManngComponentsComponent, TableComponent, MultiselectComponent, TypeaheadComponent, TabviewComponent, TabpanelComponent]
+  exports: [TableComponent, MultiselectComponent, TypeaheadComponent, TabviewComponent, TabpanelComponent]
 })
 export class ManngComponentsModule { }
