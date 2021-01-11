@@ -1,3 +1,5 @@
+[![Generic badge](https://img.shields.io/badge/Build-Passing-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Mintained-yes-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/License-MIT-orange.svg)](https://shields.io/) 
+
 # ManngComponents
 
 This library contains multiple components to make development easier and faster
@@ -31,18 +33,6 @@ Below are the components available under manng-components
 # Table
 ## Usage
 
-In `App module` import accordion module
-```python
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ManngComponentsModule } from 'manng-components'
-...
-
-imports: [...
-    BrowserAnimationModule,
-    ManngComponentsModule
-  ]
-```
-
 ### Basic usage
 ```python
 <man-table [settings]="settings" [data]="data"></man-table>
@@ -65,6 +55,18 @@ settings = {
     ]
 }
 ...
+data = []
+...
+ngOnInit() {
+    for (let i=0; i<10; i++) {
+        this.data.push({
+            value1: 'Column1 Value' + i,
+            value2: 'Column2 Value' + i
+        })
+    }
+}
+
+```
 
 ### Column Template
 ```python
@@ -82,30 +84,37 @@ In the `component`
 editButton
 
 ...
-settings = {
-    columns: [
-      {
-        label: 'Column 1',
-        valueType: 'key-value',
-        value: 'value1'
-      },
-      {
-        label: 'Column 2',
-        valueType: '',
-        columnTemplate: editButton
-      }
-    ]
-}
+settings = {}
 ...
 
 data = []
 ...
 ngOnInit() {
+    this.createSettings();
     for (let i=0; i<10; i++) {
         this.data.push({
             value1: 'Column1 Value' + i,
             value2: 'Column2 Value' + i
         })
+    }
+}
+
+...
+
+createSettings() {    
+    this.settings = {
+        columns: [
+            {
+                label: 'Column 1',
+                valueType: 'key-value',
+                value: 'value1'
+            },
+            {
+                label: 'Column 2',
+                valueType: '',
+                columnTemplate: editButton
+            }
+        ]
     }
 }
 
@@ -183,8 +192,7 @@ Below properties can be overridden to control table behaviour.
 | rowDblClick | Emit the row data on table row double click |
 
 #
-#
-#
+
 ## Multiselect
 ### Basic usage
 ```python
@@ -221,56 +229,52 @@ Below properties can be overridden to control table behaviour.
 | ------ | ----------- |
 | onSelect | Emits the values selected. If no value is selected emits empty array [] |
 
-
-#
-#
 #
 ## TabView
 ## Usage
 
-In `App module` import accordion module
-```python
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ManngComponentsModule } from 'manng-components'
-...
-
-imports: [...
-    BrowserAnimationModule,
-    ManngComponentsModule
-  ]
-```
-In the `component`
 
 ### Basic usage
+`html`
 ```python
     <man-tabview [(openTabIndex)]="openTabIndex" [maxHeight]="300">
         <man-tabpanel header="Tab 1">
             Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
         </man-tabpanel>
-        <man-tabpanel header="Tab 1">
+        <man-tabpanel header="Tab 2">
             Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
         </man-tabpanel>
-        <man-tabpanel header="Tab 1">
+        <man-tabpanel header="Tab 3">
             Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
         </man-tabpanel>
     </man-tabview>
 ```
 
+`component`
+```
+openTabIndex = 0;
+```
+
 ### Header Templating option
+`html`
 ```python
     <man-tabview [(openTabIndex)]="openTabIndex" [maxHeight]="300">
         <man-tabpanel [headerTemplate]="headerTemplate">
             <ng-template #headerTemplate>
-                <img src="favicon.ico" width="25px"> Tab2
+                <img src="favicon.ico" width="25px"> Tab1
             </ng-template>
         </man-tabpanel>
-        <man-tabpanel header="Tab 1">
+        <man-tabpanel header="Tab 2">
             Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
         </man-tabpanel>
-        <man-tabpanel header="Tab 1">
+        <man-tabpanel header="Tab 3">
             Magna veniam excepteur laboris commodo consequat tempor reprehenderit. Consequat incididunt irure minim esse sunt deserunt enim non nostrud officia in incididunt.
         </man-tabpanel>
     </man-tabview>
+```
+`component`
+```
+openTabIndex = 1;
 ```
 
 ## Inputs
@@ -290,8 +294,6 @@ In the `component`
 | confirmBeforeTabChange | boolean - Show a pop-up before changing the tab and only navigates if user accept |
 | confirmationMessage | String - Message to be displayed in confirmation pop-up |
 
-#
-#
 #
 # Typeahead
 ### Basic usage
@@ -355,5 +357,3 @@ searchItem(event) {
 | Output | Description |
 | ------ | ----------- |
 | onKeydown | Emits the value entered in typeahead input |
-
-
