@@ -8,7 +8,7 @@ import { Component, OnInit, Input, ComponentFactoryResolver, ViewChild, ViewCont
 export class RenderedCellComponent implements OnInit, OnDestroy {
 
   @Input('columnSetting')
-  columnSettings;
+  columnSettings:any = {};
 
   @Input('rowData')
   rowData
@@ -16,12 +16,12 @@ export class RenderedCellComponent implements OnInit, OnDestroy {
   @ViewChild("dynamicTarget", { read: ViewContainerRef, static: true })
   dynamicTarget: ViewContainerRef;
 
-  customComponent;
+  customComponent
 
   constructor(private resolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
-    if (!this.customComponent) {
+    if (!this.customComponent && this.columnSettings.renderComponent) {
       this.createCustomComponent();
       this.patchInstance();
     }

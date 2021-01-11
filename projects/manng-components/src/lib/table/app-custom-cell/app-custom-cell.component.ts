@@ -21,7 +21,7 @@ export class AppCustomCellComponent implements OnInit {
     this.updateValue()
   }
   _rowData;
-  _columnSetting;
+  _columnSetting:any = {};
   colValue = ''
   tooltipTimeout;
 

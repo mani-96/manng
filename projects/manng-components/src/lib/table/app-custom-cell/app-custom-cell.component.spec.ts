@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AppCustomCellComponent } from './app-custom-cell.component';
+import { RenderedCellComponent } from '../rendered-cell/rendered-cell.component';
 
 describe('AppCustomCellComponent', () => {
   let component: AppCustomCellComponent;
@@ -8,7 +9,7 @@ describe('AppCustomCellComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppCustomCellComponent ]
+      declarations: [ AppCustomCellComponent, RenderedCellComponent ]
     })
     .compileComponents();
   }));

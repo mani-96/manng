@@ -22,4 +22,10 @@ describe('TabviewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('tabs should be defined', () => {
+    component.initTabs();
+    let tabs = component.tabs;
+    expect(tabs).toBeTruthy();
+  });
 });

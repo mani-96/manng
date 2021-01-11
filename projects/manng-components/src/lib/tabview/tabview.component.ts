@@ -39,6 +39,10 @@ export class TabviewComponent implements OnInit {
 
   resizeTimeout;
 
+  tabs:any = [];
+
+  currentWindowWidth = window.innerWidth;
+
   @Input() get openTabIndex(): number {
       return this._openTabIndex;
   }
@@ -76,7 +80,7 @@ export class TabviewComponent implements OnInit {
   }
 
   switchTab(val: number) {
-    if (this.tabs && this.tabs[val].disable) {
+    if (this.tabs && this.tabs.length && this.tabs[val].disable) {
       this.stopTabChangePropogation = true;
       this.openTabIndexChange.emit(this.openTabIndex);
       return;
@@ -111,8 +115,6 @@ export class TabviewComponent implements OnInit {
   openTabIndexChange: EventEmitter<number> = new EventEmitter();
 
   @ContentChildren(TabpanelComponent) tabPanels : QueryList<TabpanelComponent>
-
-  tabs
 
   constructor(private cd: ChangeDetectorRef) { }
 
@@ -215,14 +217,14 @@ export class TabviewComponent implements OnInit {
   }
 
   static disableTab(event, instance: TabviewComponent, index) {
-    if (instance && instance.tabs) {
+    if (instance && instance.tabs[index]) {
       instance.tabs[index].disable = event;
       instance.cd.detectChanges()
     }    
   }
 
   static updateShowConfirmation(event, instance: TabviewComponent, index) {
-    if (instance && instance.tabs) {
+    if (instance && instance.tabs[index]) {
       instance.tabs[index].confirmBeforeTabChange = event;
       instance.cd.detectChanges()
     }   
@@ -239,10 +241,14 @@ export class TabviewComponent implements OnInit {
     if (this.resizeTimeout) {
       clearTimeout(this.resizeTimeout)
     }
-    this.setPanelMaxHeight();
-    this.setHasNavigation();
     this.resizeTimeout = setTimeout( () => {
-      this.setTranslateOnTabSelection();
+      // Chrome height changes on scroll, dont need to set properties when only heigh change
+      if (window.innerWidth != this.currentWindowWidth) {
+        this.currentWindowWidth = window.innerWidth;
+        this.setPanelMaxHeight();
+        this.setHasNavigation();
+        this.setTranslateOnTabSelection();
+      }
     }, 100)
   }
   
