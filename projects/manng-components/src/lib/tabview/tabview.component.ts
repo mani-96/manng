@@ -162,7 +162,7 @@ export class TabviewComponent implements OnInit {
   setHasNavigation() {
     this.hasNavigation = ( this.nav.getBoundingClientRect().width - this.scrollPanel.getBoundingClientRect().width ) > 1 ? true : false;
     if (this.hasNavigation) {
-      this.currentTranslate = 30;
+      this.currentTranslate = 35;
     } else {
       this.currentTranslate = 0;
     }
@@ -174,24 +174,24 @@ export class TabviewComponent implements OnInit {
     if (this.hasNavigation) {
       let selectedEl = this.scrollPanel.querySelector('.man-tab-selected');
       let scrollPanelWidth = this.scrollPanel.getBoundingClientRect().width
-      let pos = (selectedEl.offsetLeft + 30) + this.currentTranslate;
-      if (pos > (scrollPanelWidth - 30)) {
-        this.currentTranslate = -( pos - scrollPanelWidth + selectedEl.offsetWidth)
-      } else if (pos < 30) {
-        this.currentTranslate = 30;
+      let pos = (selectedEl.offsetLeft + selectedEl.offsetWidth) + this.currentTranslate;
+      if (Math.floor(pos) >= (scrollPanelWidth - 39)) {
+        this.currentTranslate = scrollPanelWidth - (selectedEl.offsetLeft + selectedEl.offsetWidth + 40)//-( pos - scrollPanelWidth)
+      } else if (this.currentTranslate + selectedEl.offsetLeft < 40) {
+        this.currentTranslate = 40 - selectedEl.offsetLeft;
       }
     }
   }
 
   showRight(event) {
     if (event.which != 1) return;
-    let widthDiff = this.scrollPanel.getBoundingClientRect().width - this.nav.getBoundingClientRect().width - 30;
+    let widthDiff = this.scrollPanel.getBoundingClientRect().width - this.nav.getBoundingClientRect().width - 40;
     this.currentTranslate =  (this.currentTranslate - this.scrollJump) > widthDiff  ? (this.currentTranslate - this.scrollJump) : widthDiff;
   }
 
   showLeft(event) {
     if (event.which != 1) return;
-    this.currentTranslate =  (this.currentTranslate + this.scrollJump) < 30  ? (this.currentTranslate + this.scrollJump) : 30;
+    this.currentTranslate =  (this.currentTranslate + this.scrollJump) < 40  ? (this.currentTranslate + this.scrollJump) : 40;
   }
   
   findSelectedTab() {
