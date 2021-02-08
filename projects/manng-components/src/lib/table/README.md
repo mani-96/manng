@@ -101,7 +101,8 @@ Below properties can be overridden to control table behaviour.
     tableMaxHeight: '300px',
     striped: true,
     headerBackground: '#f8f9fa',
-    showGridlines: false
+    showGridlines: false,
+    pointerOnRow: false
 }
 ```
 

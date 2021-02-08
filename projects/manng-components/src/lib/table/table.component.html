@@ -18,7 +18,7 @@
                 </th>
             </ng-container>
         </thead>
-        <tbody class="custom-table-body" [ngClass]="_settings['striped'] ? 'striped' : ''">
+        <tbody class="custom-table-body" [ngClass]="_settings['striped'] ? 'striped' : '', _settings['pointerOnRow'] ? 'pointer-body' : ''">
             <tr *ngFor="let row of _data; let i=index" (click)="rowClicked(row, $event)" (dblclick)="rowDBClicked(row, $event)"
             [ngClass]="[checked[i] ? 'selected' : '', _settings.rowClassFunction(row)]">
                 <td class="checkbox" *ngIf="_settings.showCheckbox && _settings.showCheckboxOnRow(row)">

@@ -21,7 +21,8 @@ export class TableComponent implements OnInit {
     tableHeight: '280px',
     striped: true,
     headerBackground: '#f8f9fa',
-    showGridlines: false
+    showGridlines: false,
+    pointerOnRow: false
   }
   _data: Array<any> = [];
   sortConfig = {
@@ -87,7 +88,8 @@ export class TableComponent implements OnInit {
       tableMaxHeight: '300px',
       striped: true,
       headerBackground: '#f8f9fa',
-      showGridlines: false
+      showGridlines: false,
+      pointerOnRow: false
     }
   }
 
