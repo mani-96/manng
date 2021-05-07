@@ -8,13 +8,14 @@ import { RenderedCellComponent } from './table/rendered-cell/rendered-cell.compo
 import { MultiselectItemComponent } from './multiselect/multiselect-item/multiselect-item.component';
 import { TabviewComponent } from './tabview/tabview.component';
 import { TabpanelComponent } from './tabview/tabpanel/tabpanel.component';
+import { TypingAnimationDirective } from './typing-animation/typing-animation.directive';
 
 
 
 @NgModule({
-  declarations: [TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent, RenderedCellComponent, MultiselectItemComponent, TabviewComponent, TabpanelComponent],
+  declarations: [TableComponent, TypeaheadComponent, MultiselectComponent, AppCustomCellComponent, RenderedCellComponent, MultiselectItemComponent, TabviewComponent, TabpanelComponent, TypingAnimationDirective],
   imports: [ CommonModule
   ],
-  exports: [TableComponent, MultiselectComponent, TypeaheadComponent, TabviewComponent, TabpanelComponent]
+  exports: [TableComponent, MultiselectComponent, TypeaheadComponent, TabviewComponent, TabpanelComponent, TypingAnimationDirective]
 })
 export class ManngComponentsModule { }
