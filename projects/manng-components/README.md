@@ -1,13 +1,15 @@
-[![Generic badge](https://img.shields.io/badge/Build-Passing-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Mintained-yes-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/License-MIT-orange.svg)](https://shields.io/) 
+[![Generic badge](https://img.shields.io/badge/Build-Passing-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/Mintained-yes-green.svg)](https://shields.io/) [![Generic badge](https://img.shields.io/badge/License-MIT-orange.svg)](https://shields.io/)
 
 # ManngComponents
 
 This library contains multiple components to make development easier and faster
 
 ## Working Example
+
 [View Demo](https://mani-96.github.io/manng/index.html)
 
 ### Installation
+
 ```
 npm install manng-components
 ```
@@ -15,6 +17,7 @@ npm install manng-components
 After installation make sure ManngComponentsModule is imported in your app module
 
 In `App module` import accordion module
+
 ```python
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ManngComponentsModule } from 'manng-components'
@@ -26,18 +29,22 @@ imports: [...
   ]
 ```
 
-
 ## Components
+
 Below are the components available under manng-components
 
 # Table
+
 ## Usage
 
 ### Basic usage
+
 ```python
 <man-table [settings]="settings" [data]="data"></man-table>
 ```
+
 In the `component`
+
 ```
 ...
 settings = {
@@ -69,6 +76,7 @@ ngOnInit() {
 ```
 
 ### Column Template
+
 ```python
 <man-table [settings]="settings" [data]="data">
     <ng-template let-rowData #editButton>
@@ -76,7 +84,9 @@ ngOnInit() {
     </ng-template>
 </man-table>
 ```
+
 In the `component`
+
 ```
 ....
 
@@ -101,7 +111,7 @@ ngOnInit() {
 
 ...
 
-createSettings() {    
+createSettings() {
     this.settings = {
         columns: [
             {
@@ -127,7 +137,9 @@ editClicked(rowData) {
 ```
 
 ### Default settings Object
+
 Below properties can be overridden to control table behaviour.
+
 ```python
 {
     showCheckbox: false,
@@ -147,6 +159,7 @@ Below properties can be overridden to control table behaviour.
 ```
 
 ### Column options
+
 ```
 {
     label: '',
@@ -164,43 +177,48 @@ Below properties can be overridden to control table behaviour.
     canSort: true,
     sortColumnName: '',
     columnTemplate: ''
-    
+
 }
 ```
 
-| Column Property  | Description |
-| ----- | ----------- |
-| label | Column header |
-| valueType | Determines how to show column value. Available values are 'key-value', 'function', 'html', 'custom' |
-| value | When used with valueType 'key-value' - field name that should be picked from object to display value. For valueType 'html' displays static html given as text   |
-| showToolTip | Boolean - Show tool-tip if hovered over column. |
-| valuePrepareFunction | Function to generate value of column. Row data is passed to the function|
-| renderComponent | Renders a component inside the column. valueType 'custom' must be used. |
-| canSort | Boolean - Makes column sortable. (Note - Internal sorting is not available on table. Marking this as true will emit an output eventn with column name and order in which sorting must be done |
-| sortColumnName | Column name to be used for sorting. |
-| ellipsis | Boolean - Make the value ellipsis |
-| maxWidth | Sets max width style on column. |
-| minWidth | sets min width style on column |
-| columnTemplate | Template that should be rendered in column. Use this to bind events |
+| Column Property      | Description                                                                                                                                                                                   |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| label                | Column header                                                                                                                                                                                 |
+| valueType            | Determines how to show column value. Available values are 'key-value', 'function', 'html', 'custom'                                                                                           |
+| value                | When used with valueType 'key-value' - field name that should be picked from object to display value. For valueType 'html' displays static html given as text                                 |
+| showToolTip          | Boolean - Show tool-tip if hovered over column.                                                                                                                                               |
+| valuePrepareFunction | Function to generate value of column. Row data is passed to the function                                                                                                                      |
+| renderComponent      | Renders a component inside the column. valueType 'custom' must be used.                                                                                                                       |
+| canSort              | Boolean - Makes column sortable. (Note - Internal sorting is not available on table. Marking this as true will emit an output eventn with column name and order in which sorting must be done |
+| sortColumnName       | Column name to be used for sorting.                                                                                                                                                           |
+| ellipsis             | Boolean - Make the value ellipsis                                                                                                                                                             |
+| maxWidth             | Sets max width style on column.                                                                                                                                                               |
+| minWidth             | sets min width style on column                                                                                                                                                                |
+| columnTemplate       | Template that should be rendered in column. Use this to bind events                                                                                                                           |
+
 ###### Note- Table layout is not set to fixed. Browser would use internal table layout algorithm to determine column width.
 
 ## Output
-| Output | Description |
-| ------ | ----------- |
-| checkChanged | Array - Emits the row data for which checkboxes are selected |
-| sortChanged | Emits the sortColumnName are order in which sort should happen. {column: '', order: 'ASC|DESC'}|
-| rowClick | Emit the row data on table row click |
-| rowDblClick | Emit the row data on table row double click |
+
+| Output       | Description                                                                              |
+| ------------ | ---------------------------------------------------------------------------------------- | ------ |
+| checkChanged | Array - Emits the row data for which checkboxes are selected                             |
+| sortChanged  | Emits the sortColumnName are order in which sort should happen. {column: '', order: 'ASC | DESC'} |
+| rowClick     | Emit the row data on table row click                                                     |
+| rowDblClick  | Emit the row data on table row double click                                              |
 
 #
 
 ## Multiselect
+
 ### Basic usage
+
 ```python
 <man-multiselect [options]="options"></man-multiselect>
 ```
 
 ### Templating option
+
 ```python
 <man-multiselect [options]="options"  [disable]="false" [showSearch]="false" [optionTemplate]="optionsDiv">
     <ng-template let-option #optionsDiv>
@@ -209,34 +227,37 @@ Below properties can be overridden to control table behaviour.
 </man-multiselect>
 ```
 
-
-
 ### Inputs
-| Input | Default | Description |
-| ----- | ------- | ----------- |
-| options | | Array - Complete list of options to be displayed |
-| field | | String - Value to be resolved if option is an object |
-| scrollHeight | 200 |Number - Height of overlay panel in px |
-| disabled | false | Sets disabled state |
-| showSearch | true | If false, option search would not be available  |
-| selectionLimit | null | Max options that can be selected |
-| inputStyleClass |  | Style class for typeahead input |
-| overlayStyleClass |  | Style class for overlay panel |
-| optionTemplate |  | Template for options to show |
-| selectedLabelLength | 2 | Number of labels to show when selected|
+
+| Input               | Default | Description                                          |
+| ------------------- | ------- | ---------------------------------------------------- |
+| options             |         | Array - Complete list of options to be displayed     |
+| field               |         | String - Value to be resolved if option is an object |
+| scrollHeight        | 200     | Number - Height of overlay panel in px               |
+| disabled            | false   | Sets disabled state                                  |
+| showSearch          | true    | If false, option search would not be available       |
+| selectionLimit      | null    | Max options that can be selected                     |
+| inputStyleClass     |         | Style class for typeahead input                      |
+| overlayStyleClass   |         | Style class for overlay panel                        |
+| optionTemplate      |         | Template for options to show                         |
+| selectedLabelLength | 2       | Number of labels to show when selected               |
 
 ### Output
-| Output | Description |
-| ------ | ----------- |
+
+| Output   | Description                                                             |
+| -------- | ----------------------------------------------------------------------- |
 | onSelect | Emits the values selected. If no value is selected emits empty array [] |
 
 #
+
 ## TabView
+
 ## Usage
 
-
 ### Basic usage
+
 `html`
+
 ```python
     <man-tabview [(openTabIndex)]="openTabIndex" [maxHeight]="300">
         <man-tabpanel header="Tab 1">
@@ -252,12 +273,15 @@ Below properties can be overridden to control table behaviour.
 ```
 
 `component`
+
 ```
 openTabIndex = 0;
 ```
 
 ### Header Templating option
+
 `html`
+
 ```python
     <man-tabview [(openTabIndex)]="openTabIndex" [maxHeight]="300">
         <man-tabpanel [headerTemplate]="headerTemplate">
@@ -273,88 +297,122 @@ openTabIndex = 0;
         </man-tabpanel>
     </man-tabview>
 ```
+
 `component`
+
 ```
 openTabIndex = 1;
 ```
 
 ## Inputs
-| Input | Description |
-| ----- | ----------- |
-| maxHeight | Number - Max height of tabview |
-| navWidth | Sets the width of tab header. If tabs overflow, would show navigation buttons |
-| scrollJump | Number - How much should tab header move left or right when clicked on navigation buttons |
-| openTabIndex | Index of tab opened. Opened tab can be changed by passing index of tab to be opened |
 
+| Input        | Description                                                                               |
+| ------------ | ----------------------------------------------------------------------------------------- |
+| maxHeight    | Number - Max height of tabview                                                            |
+| navWidth     | Sets the width of tab header. If tabs overflow, would show navigation buttons             |
+| scrollJump   | Number - How much should tab header move left or right when clicked on navigation buttons |
+| openTabIndex | Index of tab opened. Opened tab can be changed by passing index of tab to be opened       |
 
 ## Tabpanel Inputs
-| Input | Description |
-| ----- | ----------- |
-| header | String - Tab header string|
-| disable | boolean - Set disable state. When disabled tab can't be navigated on. If programatic navigation is tried on disabled tab, current tab would remain active |
-| confirmBeforeTabChange | boolean - Show a pop-up before changing the tab and only navigates if user accept |
-| confirmationMessage | String - Message to be displayed in confirmation pop-up |
+
+| Input                  | Description                                                                                                                                               |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| header                 | String - Tab header string                                                                                                                                |
+| disable                | boolean - Set disable state. When disabled tab can't be navigated on. If programatic navigation is tried on disabled tab, current tab would remain active |
+| confirmBeforeTabChange | boolean - Show a pop-up before changing the tab and only navigates if user accept                                                                         |
+| confirmationMessage    | String - Message to be displayed in confirmation pop-up                                                                                                   |
 
 #
+
 # Typeahead
+
 ### Basic usage
+
 ```python
 <man-typeahead [options]="options">
 </man-typeahead>
 ```
 
 ### Templating option
+
 ```python
 <man-typeahead [options]="data" [mandatorySelection]="true" [optionTemplate]="typeaheadTemplate">
     <ng-template let-option #typeaheadTemplate>
-       <img class="pl-2" src="../favicon.ico" width="20px" height="16px"> 
+       <img class="pl-2" src="../favicon.ico" width="20px" height="16px">
        <span class="pl-2">{{option}}</span>
     </ng-template>
 </man-typeahead>
 ```
+
 ### External Search
+
 `html`
+
 ```python
 <man-typeahead [listBehaviorOnFocus]="'complete'" (onKeydown)="searchItems($event)" [searchExternal]="true" [options]="extrenalValue"></man-typeahead>
 ```
 
 `component`
+
 ```
 externalValue = []
 ...
 
 searchItem(event) {
     /* Mocking service call */
-    setTimeout( () => { 
+    setTimeout( () => {
       let values = [];
       for(let i=0; i<100; i++) {
         values.push(Math.random()*10);
       }
       this.extrenalValue = values;
     }, 100)
-    
+
 }
 ```
 
-
 ### Inputs
-| Input | Default | Description |
-| ----- | ------- | ----------- |
-| options | | Array - Complete list of options to be displayed |
-| listBehaviorOnFocus | filtered | Describes how list will behave when opened. Valid values are filtered (default), complete |
-| field | | String - Value to be resolved if option is an object |
-| panelHeight | 200 |Number - Height of overlay panel in px |
-| disabled | false | Sets disabled state |
-| searchExternal | false | Doesn't search from options. Can be used with onKeydown output to show options after service call (Please refer to the example above) |
-| mandatorySelection | false | If no option is selected sets the input blank and value to '' |
-| debounceTime | 50 | Key debounce time for onKeydown output event |
-| openOnFocus | true | Bolean - If false, doesnt open overlay on focus. |
-| showDropdownIcon | false | Bolean - Show/hide dropdown icon on input. |
-| inputStyleClass |  | Style class for typeahead input |
-| overlayStyleClass |  | Style class for overlay panel |
-| optionTemplate |  | Template for options to show |
+
+| Input               | Default  | Description                                                                                                                           |
+| ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| options             |          | Array - Complete list of options to be displayed                                                                                      |
+| listBehaviorOnFocus | filtered | Describes how list will behave when opened. Valid values are filtered (default), complete                                             |
+| field               |          | String - Value to be resolved if option is an object                                                                                  |
+| panelHeight         | 200      | Number - Height of overlay panel in px                                                                                                |
+| disabled            | false    | Sets disabled state                                                                                                                   |
+| searchExternal      | false    | Doesn't search from options. Can be used with onKeydown output to show options after service call (Please refer to the example above) |
+| mandatorySelection  | false    | If no option is selected sets the input blank and value to ''                                                                         |
+| debounceTime        | 50       | Key debounce time for onKeydown output event                                                                                          |
+| openOnFocus         | true     | Bolean - If false, doesnt open overlay on focus.                                                                                      |
+| showDropdownIcon    | false    | Bolean - Show/hide dropdown icon on input.                                                                                            |
+| inputStyleClass     |          | Style class for typeahead input                                                                                                       |
+| overlayStyleClass   |          | Style class for overlay panel                                                                                                         |
+| optionTemplate      |          | Template for options to show                                                                                                          |
 
 ### Output
-| Output | Description |
-| ------ | ----------- |
+
+| Output    | Description                                |
+| --------- | ------------------------------------------ |
 | onKeydown | Emits the value entered in typeahead input |
+
+# Typing Animation
+
+### Usage
+
+```python
+    <div [dataValues]="data" [dataShowTime]="time"></div>
+```
+
+In the `component`
+
+```
+    data = ['this', 'string', 'would', 'be', 'shown'];
+    time = 5000 // Time in ms
+```
+
+## Inputs
+
+| Input        | Description                                                                                        |
+| ------------ | -------------------------------------------------------------------------------------------------- |
+| dataValues   | Array of string to be shown in typing animartion sequence                                          |
+| dataShowTime | Time in ms for which value in array would stay visible on screen before applying deleting sequence |
