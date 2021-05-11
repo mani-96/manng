@@ -37,7 +37,7 @@ export class TypeaheadComponent implements OnInit, ControlValueAccessor {
   @Input('searchExternal')
   searchExternal = false;
 
-  @Input('panelHeight')
+  @Input('scrollHeight')
   panelHeight = 200;
 
   @Input('options')
@@ -226,8 +226,10 @@ export class TypeaheadComponent implements OnInit, ControlValueAccessor {
     }
     this.overlayVisible = false;
     this.appendedToBody = false;
+    document.body.removeChild(this.panel)
     this.unbindClickEventListener();
     this.highlightedOptionIndex = null;
+    this.cd.detectChanges()
   }
 
   getOptionValue(option) {
@@ -330,6 +332,12 @@ export class TypeaheadComponent implements OnInit, ControlValueAccessor {
     if (this.documentClickListener) {
       this.documentClickListener();
       this.documentClickListener = null;
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.overlayVisible) {
+      this.hide();
     }
   }
 

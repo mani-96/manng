@@ -41,14 +41,14 @@ export class TableComponent implements OnInit {
     Object.assign(this._settings, value);
     this.setSort('', '');
     this.sortChanged.emit(this.sortConfig);
-    this.totalColumnLength = this._settings.columns.length + (this._settings.showLineNumber ? 1 : 0) + 
-    (this._settings.showCheckbox ? 1 : 0);
+    this.totalColumnLength = this._settings.columns.length + (this._settings.showLineNumber ? 1 : 0) +
+      (this._settings.showCheckbox ? 1 : 0);
     this.hasRecordWithCheckbox();
     this.changeDetectorRef.detectChanges();
   }
 
   @Input('data')
-  set data(value: Array<any>){
+  set data(value: Array<any>) {
     this._data = value;
     this.checked = [];
     this.checkChanged.emit([]);
@@ -99,8 +99,8 @@ export class TableComponent implements OnInit {
       this.showSelectAllCheckbox = false;
     }
     if (this._data && this._data.length > 0) {
-      for (let i=0; i<this._data.length; i++) {
-        if (this._settings.showCheckboxOnRow(this._data[i]) && this._settings.disableCheckboxOnRow(this._data[i])) {
+      for (let i = 0; i < this._data.length; i++) {
+        if (this._settings.showCheckboxOnRow(this._data[i]) && !this._settings.disableCheckboxOnRow(this._data[i])) {
           count += 1;
         }
       }
@@ -134,7 +134,7 @@ export class TableComponent implements OnInit {
   checkAll(event) {
     this.checked = {}
     if (event.target.checked) {
-      for (let i=0; i<this._data.length; i++) {
+      for (let i = 0; i < this._data.length; i++) {
         if (this._settings.showCheckboxOnRow(this._data[i]) && !this._settings.disableCheckboxOnRow(this._data[i])) {
           this.checked[i] = this._data[i]
         }
@@ -144,16 +144,16 @@ export class TableComponent implements OnInit {
   }
   rowClicked(row, event) {
     let path = ['target, firstChild, tagName'];
-    if (event.srcElement.tagName.toLowerCase() != 'input' && 
-    ObjectHelper.deepValueFetch(path, event) != 'input') {
+    if (event.srcElement.tagName.toLowerCase() != 'input' &&
+      ObjectHelper.deepValueFetch(path, event) != 'input') {
       this.rowClick.emit(row)
     }
 
   }
   rowDBClicked(row, event) {
     let path = ['target, firstChild, tagName'];
-    if (event.srcElement.tagName.toLowerCase() != 'input' && 
-    ObjectHelper.deepValueFetch(path, event) != 'input') {
+    if (event.srcElement.tagName.toLowerCase() != 'input' &&
+      ObjectHelper.deepValueFetch(path, event) != 'input') {
       this.rowDblClick.emit(row)
     }
 
@@ -163,7 +163,7 @@ export class TableComponent implements OnInit {
     return Object.values(this.checked).length == this.totalRecordWithCheckbox ? true : false;
   }
 
-  get  columnLength() {
+  get columnLength() {
     return this._settings.columns.length
   }
   /**@param order 'ASC' | 'DESC' */

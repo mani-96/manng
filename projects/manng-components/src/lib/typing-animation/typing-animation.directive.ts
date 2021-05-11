@@ -27,7 +27,7 @@ export class TypingAnimationDirective {
   textRotate() {
     let i = this.loopNumber % this.dataValues.length;
     let text = this.dataValues[i];
-    let timeoutPeriod = 300;
+    let timeoutPeriod = 150;
 
     if (this.isDeleting) {
       this.textToDisplay = text.substring(0, this.textToDisplay.length - 1);
@@ -41,11 +41,11 @@ export class TypingAnimationDirective {
     } else if (this.isDeleting && this.textToDisplay == '') {
       this.isDeleting = false;
       this.loopNumber++;
-      timeoutPeriod = 300;
+      timeoutPeriod = 150;
     }
 
     this.el.nativeElement.innerText = this.textToDisplay
-    setTimeout( () => {
+    setTimeout(() => {
       this.textRotate();
     }, timeoutPeriod)
 

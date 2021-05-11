@@ -75,6 +75,15 @@
     }
 }
 
+.template-div {
+    width: calc(100% - 3px);
+    display: flex;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    align-items: center;
+}
+
 .man-multiselect-input {
     padding: .25rem .5rem;
     font-size: .875rem;
