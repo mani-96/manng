@@ -6,8 +6,8 @@ import { ObjectHelper } from '../ObjectHelper';
 const formValueAccessor = {
   provide: NG_VALUE_ACCESSOR,
   multi: true,
-  useExisting: forwardRef( () => MultiselectComponent)
-  };
+  useExisting: forwardRef(() => MultiselectComponent)
+};
 
 @Component({
   selector: 'man-multiselect',
@@ -19,22 +19,22 @@ const formValueAccessor = {
 })
 export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
-  @ViewChild('panel', {static: false})
+  @ViewChild('panel', { static: false })
   set contentPanel(panel) {
     if (panel) {
       this.panel = panel.nativeElement;
     }
   }
 
-  @ViewChild('inputSearch', {static: false})
-  inputSearch; 
+  @ViewChild('inputSearch', { static: false })
+  inputSearch;
 
-  @ViewChild('selectAll', {static: false})
+  @ViewChild('selectAll', { static: false })
   selectAll
-    
+
   @Input('options')
   options: Array<any>;
-  
+
   @Input('field')
   field: string;
 
@@ -70,19 +70,19 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   allChecked = false;
 
   width = 100;
-  
+
   overlayVisible = false;
-  
+
   documentClickListener;
 
   valuesSelected = [];
-  
+
   top;
-  
+
   left;
-  
+
   calculatedMaxHeight;
-  
+
   panel;
 
   renderedOptions = [];
@@ -96,37 +96,37 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   toggleTimeout;
 
   constructor(private el: ElementRef, private cd: ChangeDetectorRef, private renderer: Renderer2) { }
-    
-  modelChanged: any = () => {}
-  touched: any = () => {}
-    
+
+  modelChanged: any = () => { }
+  touched: any = () => { }
+
   inputValue = '';
-    
-  ngOnInit() {}
+
+  ngOnInit() { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.options.currentValue) {
       this.renderedOptions = changes.options.currentValue;
     }
   }
-    
+
   writeValue(value) {
     if (!value) {
       return;
     }
     this.allChecked = false;
     this.valuesSelected = value;
-    if (value.length == this.options.length) { 
-      this.allChecked = true; 
+    if (value.length == this.options.length) {
+      this.allChecked = true;
     }
-  } 
+  }
 
-  registerOnChange(fn) { 
-    this.modelChanged = fn; 
-  } 
+  registerOnChange(fn) {
+    this.modelChanged = fn;
+  }
 
-  registerOnTouched(fn) { 
-    this.touched= fn; 
+  registerOnTouched(fn) {
+    this.touched = fn;
   }
 
   setDisabledState(val: boolean) {
@@ -141,14 +141,14 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       return;
     }
     this.touched();
-    this.toggleTimeout = setTimeout( () => {
-      if (!this.overlayVisible) { 
+    this.toggleTimeout = setTimeout(() => {
+      if (!this.overlayVisible) {
         this.overlayVisible = true;
         this.cd.detectChanges();
         this.show();
       } else {
         this.hideList();
-      } 
+      }
     })
   }
 
@@ -178,7 +178,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     // Recalculate position if just opened and not appended to body.
     // Doing this here because when this is called initially height seems to be off which makes panel overflow to bottom
     if (!this.appendedToBody) {
-      setTimeout( () => {
+      setTimeout(() => {
         this.calculateLeftAndTopPosition();
       }, 5)
     }
@@ -198,20 +198,20 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     if (event && event.target.parentElement) {
       event.target.parentElement.focus();
     }
-    if (this.selectionLimit) 
+    if (this.selectionLimit)
       return;
-    if (!this.allChecked) { 
-      this.checkAll(); 
-    } else { 
-      this.uncheckAll(); 
-    } 
-  } 
+    if (!this.allChecked) {
+      this.checkAll();
+    } else {
+      this.uncheckAll();
+    }
+  }
 
-  checkAll() { 
+  checkAll() {
     if (!this.showSearch) {
       this.valuesSelected = this.options.slice(0, this.options.length);
     } else {
-      for (let i=0; i<this.renderedOptions.length; i++) {
+      for (let i = 0; i < this.renderedOptions.length; i++) {
         if (!this.isOptionSelected(this.renderedOptions[i])) {
           this.valuesSelected.push(this.renderedOptions[i])
         }
@@ -219,17 +219,17 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     }
     this.allChecked = true;
     this.setInputValueOnCheck();
-  } 
+  }
 
-  uncheckAll() { 
-    this.allChecked = false; 
+  uncheckAll() {
+    this.allChecked = false;
     if (!this.showSearch) {
       this.valuesSelected = [];
       this.inputValue = '';
       this.cd.detectChanges();
     } else {
       let index;
-      for (let i=0; i<this.renderedOptions.length; i++) {
+      for (let i = 0; i < this.renderedOptions.length; i++) {
         index = this.getSelectedOptionIndex(this.renderedOptions[i])
         if (index >= 0) {
           this.valuesSelected.splice(index, 1)
@@ -238,13 +238,13 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
       this.setInputValueOnCheck();
     }
     this.onSelect.emit([]);
-  } 
+  }
 
   optionClicked(value) {
     let selectedIndex = this.getSelectedOptionIndex(value)
     if (selectedIndex >= 0) {
       this.valuesSelected.splice(selectedIndex, 1)
-    } else if ((this.selectionLimit != null && this.valuesSelected.length < this.selectionLimit) || this.selectionLimit == null){
+    } else if ((this.selectionLimit != null && this.valuesSelected.length < this.selectionLimit) || this.selectionLimit == null) {
       this.valuesSelected.push(value);
     }
     this.setInputValueOnCheck();
@@ -256,7 +256,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   getSelectedOptionIndex(option) {
     let index = -1
-    for (let i=0; i<this.valuesSelected.length; i++) {
+    for (let i = 0; i < this.valuesSelected.length; i++) {
       if (ObjectHelper.isObjectequal(this.valuesSelected[i], option, this.field)) {
         index = i;
         break;
@@ -264,16 +264,16 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     }
     return index;
   }
-  
-  setInputValueOnCheck() { 
+
+  setInputValueOnCheck() {
     let filtered: Array<any> = this.valuesSelected.slice();
     this.onSelect.emit(filtered);
-    this.allChecked = false; 
+    this.allChecked = false;
     if (filtered.length > 0) {
       if (!this.field) {
         this.inputValue = filtered.length <= this.selectedLabelLength ? filtered.slice(0, this.selectedLabelLength).join(', ') : (filtered.length + ' items selected');
       } else {
-        this.inputValue = filtered.length <= this.selectedLabelLength ? filtered.slice(0, this.selectedLabelLength).map(key => ObjectHelper.resolveFieldData(key, this.field)).join(', ') :(filtered.length + ' items selected');
+        this.inputValue = filtered.length <= this.selectedLabelLength ? filtered.slice(0, this.selectedLabelLength).map(key => ObjectHelper.resolveFieldData(key, this.field)).join(', ') : (filtered.length + ' items selected');
       }
       this.modelChanged(filtered);
     } else {
@@ -285,16 +285,16 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
 
   bindClickEventListener() {
     if (!this.documentClickListener) {
-        const documentTarget: any = this.el ? this.el.nativeElement.ownerDocument : 'document';
-        this.documentClickListener = this.renderer.listen(documentTarget, 'click', (event) => {
-            if (event.which === 3) {
-                return;
-            }
-            if ((this.panel && !this.panel.contains(event.target)) && !this.el.nativeElement.contains(event.target)) {
-              this.hideList();
-            }
-            this.cd.detectChanges();
-        });
+      const documentTarget: any = this.el ? this.el.nativeElement.ownerDocument : 'document';
+      this.documentClickListener = this.renderer.listen(documentTarget, 'click', (event) => {
+        if (event.which === 3) {
+          return;
+        }
+        if ((this.panel && !this.panel.contains(event.target)) && !this.el.nativeElement.contains(event.target)) {
+          this.hideList();
+        }
+        this.cd.detectChanges();
+      });
     }
   }
 
@@ -306,39 +306,39 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
   onKeyDown(event, index, option) {
-    switch(event.originalEvent.which) {
+    switch (event.originalEvent.which) {
       //down
       case 40:
-          let nextItem = this.findNextItem(event.originalEvent.target.parentElement);
-          if (nextItem && nextItem.children[0]) {
-              nextItem.children[0].focus();
-          }
-          event.originalEvent.preventDefault();
-      break;
+        let nextItem = this.findNextItem(event.originalEvent.target.parentElement);
+        if (nextItem && nextItem.children[0]) {
+          nextItem.children[0].focus();
+        }
+        event.originalEvent.preventDefault();
+        break;
 
       //up
       case 38:
-          let prevItem = this.findPrevItem(event.originalEvent.target.parentElement);
-          if (prevItem && prevItem.children[0]) {
-            prevItem.children[0].focus();
-          }
+        let prevItem = this.findPrevItem(event.originalEvent.target.parentElement);
+        if (prevItem && prevItem.children[0]) {
+          prevItem.children[0].focus();
+        }
 
-          event.originalEvent.preventDefault();
-      break;
+        event.originalEvent.preventDefault();
+        break;
 
       //enter
       case 13:
-      if (index == 'all') {
-        this.allChecked ? this.allClicked({target: {checked: false}}) : this.allClicked({target: {checked: true}})
-      } else { 
-        this.optionClicked(option)
-      }           
-      break;
+        if (index == 'all') {
+          this.allChecked ? this.allClicked({ target: { checked: false } }) : this.allClicked({ target: { checked: true } })
+        } else {
+          this.optionClicked(option)
+        }
+        break;
 
       //esc
       case 27:
-      this.escapeKeydown(event.originalEvent);
-      break;
+        this.escapeKeydown(event.originalEvent);
+        break;
     }
   }
 
@@ -358,19 +358,21 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
     if (this.searchTimeout) {
       clearTimeout(this.searchTimeout)
     }
-    this.searchTimeout = setTimeout( () => {
+    this.searchTimeout = setTimeout(() => {
       let value = event.target.value;
       this.searchInput = value;
       this.renderedOptions = []
       if (value) {
         if (this.field) {
-          for (let i=0; i<this.options.length; i++) {
-            if (ObjectHelper.resolveFieldData(this.options[i], this.field).indexOf(value) != -1) {
+          for (let i = 0; i < this.options.length; i++) {
+            let optionValue: string = ObjectHelper.resolveFieldData(this.options[i], this.field);
+            optionValue = optionValue ? optionValue : '';
+            if (optionValue.toLowerCase().indexOf(value.toLowerCase()) != -1) {
               this.renderedOptions.push(this.options[i])
             }
           }
         } else {
-          for (let i=0; i<this.options.length; i++) {
+          for (let i = 0; i < this.options.length; i++) {
             if (this.options[i].indexOf(value) != -1) {
               this.renderedOptions.push(this.options[i])
             }
@@ -390,7 +392,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
         isAllChecked = false
       }
     } else {
-      for (let i=0 ;i<this.renderedOptions.length; i++) {
+      for (let i = 0; i < this.renderedOptions.length; i++) {
         if (!this.isOptionSelected(this.renderedOptions[i])) {
           isAllChecked = false;
           break;
@@ -422,7 +424,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
         event.preventDefault();
       }
     }
-    if (event.which == 32 ) {
+    if (event.which == 32) {
       this.toggleOpen();
       event.preventDefault();
     }
@@ -460,7 +462,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
   }
 
 
-  @HostListener('window: resize') 
+  @HostListener('window: resize')
   handleResize() {
     if (this.overlayVisible) {
       this.calculateLeftAndTopPosition();
