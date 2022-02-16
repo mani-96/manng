@@ -373,7 +373,7 @@ export class MultiselectComponent implements OnInit, ControlValueAccessor {
           }
         } else {
           for (let i = 0; i < this.options.length; i++) {
-            if (this.options[i].indexOf(value) != -1) {
+            if (this.options[i].toLowerCase().indexOf(value) != -1) {
               this.renderedOptions.push(this.options[i])
             }
           }

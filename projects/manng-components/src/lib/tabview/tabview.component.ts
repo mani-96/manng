@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
   styleUrls: ['./tabview.component.scss']
 })
 export class TabviewComponent implements OnInit {
-  @ViewChild('scroll', {static : false})
+  @ViewChild('scroll', { static: false })
   set scroll(val) {
     this.scrollPanel = val.nativeElement;
   }
@@ -18,48 +18,43 @@ export class TabviewComponent implements OnInit {
   _maxHeight;
 
   nav;
-  
+
   panelMaxHeight;
-  
+
   confirmationMessage = '';
-  
+
   overlayVisible = false;
-  
+
   confirmSwitchObservable = new Subject();
-  
+
   confirmSwitchObservableSubscription;
-  
+
   stopTabChangePropogation = false;
-  
+
   hasNavigation = false;
-  
+
   currentTranslate = 0;
-  
+
   scrollPanel;
 
   resizeTimeout;
 
-  tabs:any = [];
+  tabs: any = [];
 
   currentWindowWidth = window.innerWidth;
 
-  @Input() get openTabIndex(): number {
-      return this._openTabIndex;
+  @Input()
+  get openTabIndex(): number {
+    return this._openTabIndex;
   }
-  
-  @Input('navWidth')
-  navWidth = "100%";
 
-  @Input('scrollJump')
-  scrollJump = 100;
-
-  set openTabIndex(val:number) {
+  set openTabIndex(val: number) {
     if (this.stopTabChangePropogation) {
       this.stopTabChangePropogation = false;
       return;
     }
-    let currentTab =  this.findSelectedTab();
-    if ( currentTab && currentTab.confirmBeforeTabChange ) {
+    let currentTab = this.findSelectedTab();
+    if (currentTab && currentTab.confirmBeforeTabChange) {
       this.overlayVisible = true;
       this.confirmationMessage = this.tabs[this.openTabIndex].confirmationMessage;
       this.confirmSwitchObservableSubscription = this.confirmSwitchObservable.subscribe(data => {
@@ -79,22 +74,14 @@ export class TabviewComponent implements OnInit {
     }
   }
 
-  switchTab(val: number) {
-    if (this.tabs && this.tabs.length && this.tabs[val].disable) {
-      this.stopTabChangePropogation = true;
-      this.openTabIndexChange.emit(this.openTabIndex);
-      return;
-    }
-    this._openTabIndex = val;
-    if(this.tabs && this.tabs.length && this._openTabIndex != null && this.tabs.length > this._openTabIndex) {
-        this.findSelectedTab().selected = false;
-        this.tabs[this._openTabIndex].selected = true;
-          setTimeout( () => {
-            this.setTranslateOnTabSelection();
-            this.cd.detectChanges();
-          })
-    }
-  }
+  @Output()
+  openTabIndexChange: EventEmitter<number> = new EventEmitter();
+
+  @Input('navWidth')
+  navWidth = "100%";
+
+  @Input('scrollJump')
+  scrollJump = 100;
 
   @Input()
   set maxHeight(value) {
@@ -104,17 +91,14 @@ export class TabviewComponent implements OnInit {
     }
   }
 
-  @ViewChild('navigation', {static: false})
+  @ViewChild('navigation', { static: false })
   set navigation(nav) {
     if (nav) {
       this.nav = nav.nativeElement;
     }
   }
 
-  @Output()
-  openTabIndexChange: EventEmitter<number> = new EventEmitter();
-
-  @ContentChildren(TabpanelComponent) tabPanels : QueryList<TabpanelComponent>
+  @ContentChildren(TabpanelComponent) tabPanels: QueryList<TabpanelComponent>
 
   constructor(private cd: ChangeDetectorRef) { }
 
@@ -122,30 +106,46 @@ export class TabviewComponent implements OnInit {
   }
 
   ngAfterContentInit() {
+    this.initTabs();
+
+    this.tabPanels.changes.subscribe(_ => {
       this.initTabs();
-      
-      this.tabPanels.changes.subscribe( _ => {
-          this.initTabs();
-      });
+    });
   }
 
-  
   initTabs(): void {
-      this.tabs = this.tabPanels.toArray();
-      // This check might not be needed
-      if (this.tabs) {
-        for (let i=0; i<this.tabs.length; i++) {
-          this.tabs[i].componentInstance = this;
-          this.tabs[i].index = i;
-        }
+    this.tabs = this.tabPanels.toArray();
+    // This check might not be needed
+    if (this.tabs) {
+      for (let i = 0; i < this.tabs.length; i++) {
+        this.tabs[i].componentInstance = this;
+        this.tabs[i].index = i;
       }
-      let selectedTab: TabpanelComponent = this.findSelectedTab();
-      if(!selectedTab && this.tabs.length) {
-        if(this.openTabIndex != null && this.tabs.length > this.openTabIndex && !this.tabs[this.openTabIndex].disable)
-            this.tabs[this.openTabIndex].selected = true;
-        else
-            this.tabs[0].selected = true;
-      }
+    }
+    let selectedTab: TabpanelComponent = this.findSelectedTab();
+    if (!selectedTab && this.tabs.length) {
+      if (this.openTabIndex != null && this.tabs.length > this.openTabIndex && !this.tabs[this.openTabIndex].disable)
+        this.tabs[this.openTabIndex].selected = true;
+      else
+        this.tabs[0].selected = true;
+    }
+  }
+
+  switchTab(val: number) {
+    if (this.tabs && this.tabs.length && this.tabs[val].disable) {
+      this.stopTabChangePropogation = true;
+      this.openTabIndexChange.emit(this.openTabIndex);
+      return;
+    }
+    this._openTabIndex = val;
+    if (this.tabs && this.tabs.length && this._openTabIndex != null && this.tabs.length > this._openTabIndex) {
+      this.findSelectedTab().selected = false;
+      this.tabs[this._openTabIndex].selected = true;
+      setTimeout(() => {
+        this.setTranslateOnTabSelection();
+        this.cd.detectChanges();
+      })
+    }
   }
 
   ngAfterViewInit() {
@@ -160,7 +160,7 @@ export class TabviewComponent implements OnInit {
   }
 
   setHasNavigation() {
-    this.hasNavigation = ( this.nav.getBoundingClientRect().width - this.scrollPanel.getBoundingClientRect().width ) > 1 ? true : false;
+    this.hasNavigation = (this.nav.getBoundingClientRect().width - this.scrollPanel.getBoundingClientRect().width) > 1 ? true : false;
     if (this.hasNavigation) {
       this.currentTranslate = 35;
     } else {
@@ -186,27 +186,27 @@ export class TabviewComponent implements OnInit {
   showRight(event) {
     if (event.which != 1) return;
     let widthDiff = this.scrollPanel.getBoundingClientRect().width - this.nav.getBoundingClientRect().width - 40;
-    this.currentTranslate =  (this.currentTranslate - this.scrollJump) > widthDiff  ? (this.currentTranslate - this.scrollJump) : widthDiff;
+    this.currentTranslate = (this.currentTranslate - this.scrollJump) > widthDiff ? (this.currentTranslate - this.scrollJump) : widthDiff;
   }
 
   showLeft(event) {
     if (event.which != 1) return;
-    this.currentTranslate =  (this.currentTranslate + this.scrollJump) < 40  ? (this.currentTranslate + this.scrollJump) : 40;
+    this.currentTranslate = (this.currentTranslate + this.scrollJump) < 40 ? (this.currentTranslate + this.scrollJump) : 40;
   }
-  
+
   findSelectedTab() {
-    if (!this.tabs) 
+    if (!this.tabs)
       return null;
-    for(let i = 0; i < this.tabs.length; i++) {
-        if(this.tabs[i].selected) {
-            return this.tabs[i];
-        }
+    for (let i = 0; i < this.tabs.length; i++) {
+      if (this.tabs[i].selected) {
+        return this.tabs[i];
+      }
     }
     return null;
   }
 
   tabSelected(idx) {
-    if ( this.tabs[idx].disable) {
+    if (this.tabs[idx].disable) {
       return;
     }
     this.openTabIndexChange.emit(idx);
@@ -220,18 +220,18 @@ export class TabviewComponent implements OnInit {
     if (instance && instance.tabs[index]) {
       instance.tabs[index].disable = event;
       instance.cd.detectChanges()
-    }    
+    }
   }
 
   static updateShowConfirmation(event, instance: TabviewComponent, index) {
     if (instance && instance.tabs[index]) {
       instance.tabs[index].confirmBeforeTabChange = event;
       instance.cd.detectChanges()
-    }   
+    }
 
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     if (this.confirmSwitchObservableSubscription)
       this.confirmSwitchObservable.unsubscribe();
   }
@@ -241,7 +241,7 @@ export class TabviewComponent implements OnInit {
     if (this.resizeTimeout) {
       clearTimeout(this.resizeTimeout)
     }
-    this.resizeTimeout = setTimeout( () => {
+    this.resizeTimeout = setTimeout(() => {
       // Chrome height changes on scroll, dont need to set properties when only heigh change
       if (window.innerWidth != this.currentWindowWidth) {
         this.currentWindowWidth = window.innerWidth;
@@ -251,7 +251,7 @@ export class TabviewComponent implements OnInit {
       }
     }, 100)
   }
-  
+
   @HostListener('document: keydown', ['$event'])
   handleKeydown(event) {
     if (this.overlayVisible && event.which == 27) {
