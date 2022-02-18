@@ -1,4 +1,4 @@
-@charset "UTF-8";body{background-color:#f8f2fe}.code{white-space:pre-wrap;background:#2e2e2e;color:#e4e4e4;border-left:5px solid #d3d3d3;padding:5px;cursor:text}.properties-table{border-collapse:collapse;width:100%}.properties-table td,.properties-table th{padding:5px;border:1px solid #f8f8f8}.bg-blue{color:#fff;background:#4a80ad;padding:5px;text-align:center;margin:0 5px 0 0}
+@charset "UTF-8";body{background-color:#f8f2fe}.code{white-space:pre-wrap;background:#2e2e2e;color:#e4e4e4;border-left:5px solid #d3d3d3;padding:5px;cursor:text}.properties-table{border-collapse:collapse;width:100%}.properties-table td,.properties-table th{padding:5px;border:1px solid #f8f8f8}input.no-border{border:none!important;border-bottom:1px solid #d3d3d3!important;outline:none;border-radius:0!important}.container-new{background:#4a61ad;max-width:-webkit-fit-content;max-width:-moz-fit-content;max-width:fit-content;padding:10px}.bg-blue{color:#fff;background:#4a80ad;padding:5px;text-align:center;margin:0 5px 0 0}
 /*!
  * Bootstrap v5.0.0 (https://getbootstrap.com/)
  * Copyright 2011-2021 The Bootstrap Authors
