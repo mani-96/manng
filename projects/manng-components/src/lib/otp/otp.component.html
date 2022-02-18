@@ -1,0 +1,11 @@
+<div class="wrapper {{config.containerClass}}" id="c_{{componentId}}" *ngIf="formArray?.controls">
+    <ng-container [formGroup]="formGroup">
+        <ng-container formArrayName="formArray">
+            <input [placeholder]="config?.placeholder || ''" class="otp-input {{config.inputClass}}"
+                [attr.type]="inputType" autocomplete="one-time-code"
+                *ngFor="let item of formArray.controls; let i=index" [formControlName]="i"
+                id="otp_{{i}}_{{componentId}}" (keydown)="onKeyDown($event)" (keyup)="onKeyUp($event,i)"
+                (paste)="handlePaste($event)" [attr.disabled]="disabled ? 'disabled' : null">
+        </ng-container>
+    </ng-container>
+</div>
